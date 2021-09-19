@@ -183,7 +183,6 @@ if (localStorage.getItem("healthon") == null ) {
   localStorage.setItem('healthon', 'true');
 }
 
-//section
 if (localStorage.getItem("speedframes") == null) {
   localStorage.setItem('speedframes', 125);
 }
@@ -197,8 +196,6 @@ speedfps: localStorage.getItem("speedframes")
 })
 }).then(resp => resp.json()).then(resp => console.log(resp));
 
-
-// section
 function droplistchange(x) {
   var droplist = x.options[x.selectedIndex].innerHTML.replace(/\"/g, '');
   
@@ -243,7 +240,7 @@ if (localStorage.getItem("armouron") == null ) {
   armourtogglemenu.checked = true;
   localStorage.setItem('armouron', 'true');
 }
-// section
+
 
 var balancetogglemenu = document.getElementById("showbalanceandjob");
 function balancetoggle() {
@@ -264,7 +261,7 @@ if (localStorage.getItem("balanceon") == 'true') {
   balancetogglemenu.checked = false;
 }
 
-// section
+
 
 var armourreltogglemenu = document.getElementById("armourrel");
 function armourrelevant() {
@@ -291,7 +288,7 @@ if (localStorage.getItem("armourrele") == null ) {
   localStorage.setItem('armourrele', 'true');
 }
 
-// section
+
 
 var staminatogglemenu = document.getElementById("staminaonoff");
 function staminatoggle() {
@@ -317,7 +314,7 @@ if (localStorage.getItem("staminaon") == null ) {
   staminatogglemenu.checked = true;
   localStorage.setItem('staminaon', 'true');
 }
-// section
+
 
 var hungertogglemenu = document.getElementById("hungeronoff");
 function hungertoggle() {
@@ -343,7 +340,7 @@ if (localStorage.getItem("hungeron") == null ) {
   hungertogglemenu.checked = true;
   localStorage.setItem('hungeron', 'true');
 }
-// section
+
 
 var thirsttogglemenu = document.getElementById("thirstonoff");
 function thristtoggle() {
@@ -369,7 +366,7 @@ if (localStorage.getItem("thriston") == null ) {
   thirsttogglemenu.checked = true;
   localStorage.setItem('thriston', 'true');
 }
-// section
+
 
 var voicetogglemenu = document.getElementById("voiceonoff");
 function voicetoggle() {
@@ -395,7 +392,7 @@ if (localStorage.getItem("voiceon") == null ) {
   voicetogglemenu.checked = true;
   localStorage.setItem('voiceon', 'true');
 }
-// section
+
 
 var oxygenrelmenu = document.getElementById("oxygenrel");
 function oxygenrelevant() {
@@ -421,9 +418,7 @@ if (localStorage.getItem("oxygenisrel") == null ) {
   oxygenrelmenu.checked = true;
   localStorage.setItem('oxygenisrel', 'true');
 }
-// section
 
-//section
 
 var fueltogglemenu = document.getElementById("fuelonoff");
 function fueltoggle() {
@@ -450,7 +445,8 @@ if (localStorage.getItem("fuelon") == null ) {
   localStorage.setItem('fuelon', 'true');
 }
 
-// section
+
+
 
 var speedtogglemenu = document.getElementById("speedonoff");
 function speedtoggle() {
@@ -477,7 +473,7 @@ if (localStorage.getItem("speedon") == null ) {
   localStorage.setItem('speedon', 'true');
 }
 
-// section
+
 
 var maptogglemenu = document.getElementById("maponoff");
 function maptoggle() {
@@ -556,7 +552,7 @@ if (localStorage.getItem("mapon") == null ) {
 
 
 
-// section
+
 const CancelMenu = () => {
   $.post(`https://joehud/cancel`);
 };
@@ -570,7 +566,7 @@ document.onkeyup = function (event) {
   }
 };
 
-// section
+
 
 window.addEventListener("message", function (event) {
   let data = event.data;
@@ -618,7 +614,7 @@ window.addEventListener("message", function (event) {
     VoiceBar.path.setAttribute("stroke", "#FFFFFF");
   }
 
-  //section
+
   
   if (data.showOxygen == true && localStorage.getItem("oxygenisrel") == 'true') {
     $("#OxygenBar").show();
@@ -632,7 +628,7 @@ window.addEventListener("message", function (event) {
     $("#OxygenBar").show();
   } 
 
-  // section
+
 
   if (data.armor < 1, localStorage.getItem("armourrele") == 'false') {
     $("#ArmourBar").fadeIn();
