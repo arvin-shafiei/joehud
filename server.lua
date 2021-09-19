@@ -27,7 +27,6 @@ AddEventHandler('joehud:getServerInfo', function()
 	end
 end)
 
--- show balance & job commands
 RegisterCommand("job", function(source, args, rawCommand)
     local _source = source
     if (_source > 0) then

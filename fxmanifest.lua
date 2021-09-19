@@ -1,6 +1,6 @@
 fx_version 'cerulean'
 name 'joehud'
-author 'Joe is a Rogan'
+author ''
 description 'Kind of working hud that works a bit better now'
 game 'gta5'
 

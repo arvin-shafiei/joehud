@@ -42,7 +42,7 @@ RegisterCommand('seatbelt', function()
     seatbelt()
 end, false)    
 
--- Seatbelt & Car Stuff
+
 local speedBuffer  = {}
 local velBuffer    = {}
 local wasInCar     = false
@@ -107,14 +107,14 @@ Citizen.CreateThread(function()
 			    speedBuffer[1], speedBuffer[2] = 0.0, 0.0
 		    end
             
-             Wait(10) -- Lowered to as much as possible without breaking it
+             Wait(10) 
 	    end
 end)
 
--- End of Seatbelt
 
 
--- Speed Limiter Starts
+
+
 local ind = {l = false, r = false}
 
 local speedBuffer  = {}
@@ -170,9 +170,7 @@ Citizen.CreateThread( function()
 			end
 		end
 end)
--- End of Speed Limiter
 
--- If statements for days
 Citizen.CreateThread(function()
     while true do
         Wait(1500)
@@ -328,7 +326,7 @@ function isinvehicle()
     end)
 end
 
--- Map stuff below
+
 local x = -0.025
 local y = -0.015
 local w = 0.16
@@ -372,7 +370,7 @@ AddEventHandler('joehud:devmode', function()
     SendNUIMessage({action = "devmode"})
 end, false)     
 
--- show job & cash commands
+
 
 RegisterNetEvent('joehud:showjob')
 AddEventHandler('joehud:showjob', function()
