@@ -4,9 +4,11 @@ Joe HUD (HUD, Seatbelt & Speedlimiter) - This is my first project & all feedback
 
 ## Installation
 
-1. Put 'joehud' into your 'resources' folder.
+1. Download JoeHUD
 
-2. Start in servercfg.
+2. Put 'joehud' into your ‘resources’ folder.
+
+3. Start in servercfg.
 
 Do not change the name or most parts will not function.*
 
