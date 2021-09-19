@@ -20,9 +20,7 @@ AddEventHandler('joehud:getServerInfo', function()
 			job = job,
 			money = xPlayer.getMoney(),
 			bankMoney = xPlayer.getAccount('bank').money,
-			blackMoney = xPlayer.getAccount('black_money').money,
-			vipCoins = xPlayer.getAccount('vip_coins').money,
-			carCoins = xPlayer.getAccount('car_coins').money,
+			blackMoney = xPlayer.getAccount('black_money').money
 		}
 
         TriggerClientEvent('joehud:setInfo', source, info)

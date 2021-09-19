@@ -34,8 +34,8 @@ AddEventHandler('esx:setJob', function(job)
 	ESX.PlayerData.job = job
 end)
 
-RegisterKeyMapping('speedlimiter', 'SpeedLimiter', 'keyboard', 171)
-RegisterKeyMapping('seatbelt', 'Seatbelt', 'keyboard', 29)
+RegisterKeyMapping('speedlimiter', 'SpeedLimiter', 'keyboard', 'CAPITAL')
+RegisterKeyMapping('seatbelt', 'Seatbelt', 'keyboard', 'B')
 
 
 RegisterCommand('seatbelt', function()
