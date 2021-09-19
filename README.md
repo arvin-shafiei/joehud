@@ -47,7 +47,7 @@ Do not change the name or most parts will not function.*
 
 • Speedlimiter- Default Key [CAPSLOCK] - Can be changed in FiveM settings
 
-/Seatbelt & /Speedlimiter
+• /Seatbelt & /Speedlimiter
 
 ## Big thanks to
 https://forum.cfx.re/u/cosmokramer/ for snippets & inital inspiration.
