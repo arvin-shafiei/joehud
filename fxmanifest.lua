@@ -1,7 +1,7 @@
 fx_version 'cerulean'
 name 'joehud'
-author ''
-description 'Kind of working hud that works a bit better now'
+author 'CosmoKramer / joerogan#0001'
+description 'HUD & Seatbelt & Speedlimiter System'
 game 'gta5'
 
 ui_page 'html/ui.html'
