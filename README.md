@@ -29,10 +29,15 @@ Do not change the name or most parts will not function.*
 ## Requirements
 
 • esx_status
+
 • esx_basicneeds
+
 • mumble-voip
+
 • LegacyFuel
+
 • esx_society
+
 • es_extended
 
 ## Usage
