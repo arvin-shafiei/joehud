@@ -326,13 +326,14 @@ function isinvehicle()
     end)
 end
 
-
+-- Map stuff below
 local x = -0.025
 local y = -0.015
 local w = 0.16
 local h = 0.25
 
 Citizen.CreateThread(function()
+
     local minimap = RequestScaleformMovie("minimap")
     RequestStreamedTextureDict("circlemap", false)
     while not HasStreamedTextureDictLoaded("circlemap") do Wait(100) end
