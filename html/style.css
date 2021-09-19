@@ -1,0 +1,352 @@
+body {
+  width: 100%;
+  overflow: hidden;
+  font-family: "Exo 2", sans-serif;
+}
+
+.container {
+  width: 100%;
+  height: 100%;
+}
+
+.hudmenu {
+  width: 650px;
+  height: 500px;
+  background-color: #151515;
+  border-radius: 10px;
+  padding: 15px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  position: fixed;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  overflow-y: scroll;
+  overflow-x: hidden;
+}
+
+.hudmenu::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0);
+    border: none;
+    border-radius: 10px;
+    margin-top: 1px;
+}
+
+.hudmenu::-webkit-scrollbar {
+    width: 0.5rem;
+}
+
+.hudmenu::-webkit-scrollbar-thumb {
+    background-color:#aaa;
+    border-radius: 99vmax;
+    border: 4px solid rgba(0, 0, 0, 0);
+
+}
+
+.cm-toggle {
+	-webkit-appearance: none;
+	-webkit-tap-highlight-color: transparent;
+	position: relative;
+	border: 0;
+	outline: 0;
+	cursor: pointer;
+	margin-right: 10px;
+}
+
+.cm-toggle:after {
+	content: '';
+	width: 45px;
+	height: 20px;
+	display: inline-block;
+	background: rgba(196, 195, 195, 0.55);
+	border-radius: 18px;
+	clear: both;
+}
+
+.cm-toggle:before {
+	content: '';
+	width: 20px;
+	height: 20px;
+	display: block;
+	position: absolute;
+	left: 0;
+	top: 0.5px;
+	border-radius: 50%;
+	background: rgb(255, 255, 255);
+	box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.6);
+}
+
+.cm-toggle:checked:before {
+	left: 25px;
+	box-shadow: -1px 1px 3px rgba(0, 0, 0, 0.6);
+}
+
+.cm-toggle:checked:after {
+	background: #ffff00;
+}
+
+.cm-toggle,
+.cm-toggle:before,
+.cm-toggle:after,
+.cm-toggle:checked:before,
+.cm-toggle:checked:after {
+	transition: ease .3s;
+	-webkit-transition: ease .3s;
+	-moz-transition: ease .3s;
+	-o-transition: ease .3s;
+}
+
+hr
+{
+    border: 1px solid #666;
+    position: absolute;
+    width: 650px;
+}
+
+label {
+  font-size: 20px;
+  font-weight: 900;
+  color: gray;
+}
+
+.Icons {
+  position: absolute;
+  bottom: 0vh;
+  left: 0.1vh;
+  width: 100%;
+}
+
+.BaseCircle {
+  position: relative;
+  width: 4vh !important;
+  height: 4vh !important;
+  margin: 0.3vh;
+  float: left;
+  border-radius: 50%;
+  background: rgba(49, 49, 49, 0.6);
+}
+
+.FuelCircle {
+  position: relative;
+  width: 4vh !important;
+  height: 4vh !important;
+  margin: 0.3vh;
+  float: left;
+}
+
+#Job {
+  text-align: right;
+  color: white;
+  font-weight: 900;
+  font-family: "Exo 2", sans-serif;
+  margin-top: 5px;
+  margin-right: 1%; 
+  font-size: 25px;
+}
+
+.MoneyCircle {
+  position: relative;
+  width: 3vh !important;
+  height: 3vh !important;
+  border-radius: 50%;
+  background: rgba(49, 49, 49, 0.6);
+  margin-right: 1%;
+  margin-top: 2.5px;
+}
+
+
+.MoneyBox {
+  position: absolute;
+  top: 3.5vh;
+  right: 5.5%;
+}
+
+.balancetext{
+  font-size: 12.5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: rgba(0,0,0,.1);
+  border-radius: 15px;
+  margin-left: 5px;
+  padding: 2px;
+  background-clip: padding-box;
+  margin-right: 1%;
+  font-family: "Exo 2", sans-serif;
+  font-weight: 1000;
+  background-color: rgba(0,0,0,.1);
+}
+
+
+  .outline {
+    position: fixed;
+    bottom: 8vh;
+    left: 1.1vh;
+    /* overflow: hidden; */
+    width: 29.529vh;
+    text-align: center;
+  }
+  .mapborder {
+    width: 24.000vh;
+    height: 21.90vh;
+    border: 4px solid #9fa3ab;
+    border-radius: 50%;
+    box-shadow: 0px 0px 16px rgba(0,0,0,0.5); 
+    position: relative;
+    right: 32.5px;
+    top: 40px;
+    display: inline-block;
+  }
+
+.fa-heart,
+.fa-shield-alt,
+.fa-hamburger,
+.fa-skull
+{
+  color: white;
+  position: absolute;
+  font-size: 1.6vh;
+  left: 1.2vh;
+  bottom: 1.2vh;
+}
+
+.fa-coins,
+.fa-university,
+.fa-car,
+.fa-briefcase {
+color: white;
+position: absolute;
+font-size: 1.6vh;
+left: 0.75vh;
+bottom: 0.75vh;
+}
+
+.fa-running {
+  color: white;
+  position: absolute;
+  font-size: 1.6vh;
+  left: 1.4vh;
+  bottom: 1.2vh;
+}
+
+.fa-lungs {
+  color: white;
+  position: absolute;
+  font-size: 1.6vh;
+  left: 1vh;
+  bottom: 1.3vh;
+}
+
+.fa-tint {
+  color: white;
+  position: absolute;
+  font-size: 1.6vh;
+  left: 1.5vh;
+  bottom: 1.2vh;
+}
+
+.fa-align-justify  {
+  color: white;
+  position: absolute;
+  font-size: 1.7vh;
+  left: 1.3vh;
+  bottom: 1.2vh;
+}
+
+.fa-microphone {
+  color: white;
+  position: absolute;
+  font-size: 1.6vh;
+  left: 1.4vh;
+  bottom: 1.25vh;
+  }
+
+.fa-mask {
+  color: white;
+  position: absolute;
+  font-size: 1.6vh;
+  left: 0.5vh;
+  bottom: 0.75vh;
+}
+
+.fa-wallet {
+  color: white;
+  position: absolute;
+  font-size: 1.6vh;
+  left: 0.75vh;
+  bottom: 0.75vh;
+}
+
+.fa-user-slash,
+.fa-terminal {
+  color: white;
+  position: absolute;
+  font-size: 1.6vh;
+  left: 1vh;
+  bottom: 1.2vh;
+}
+
+.fa-tachometer-alt {
+  color: white;
+  position: absolute;
+  font-size: 1.6vh;
+  left: 1.1vh;
+  bottom: 1.3vh;
+}
+
+#SpeedCircle {
+  width: 6vh !important;
+  height: 6vh !important;
+  position: absolute;
+  font-size: 5vh;
+  left: 24vh;
+  bottom: 5.6vh;
+  transform: rotate(-180deg);
+}
+
+#SpeedIndicator {
+  color: white;
+  position: inherit;
+  z-index: 1000;
+  left: 1.5vh;
+  top: -2vh;
+  width: 3vh;
+  font-size: 1.55vh;
+  text-align: center;
+  text-shadow: 0.2vh 0.2vh 0vh rgb(22, 22, 22);
+  transform: rotate(-180deg);
+}
+
+#FuelCircle {
+  width: 3vh !important;
+  height: 3vh !important;
+  position: absolute;
+  left: 29vh;
+  bottom: 4vh;
+}
+
+.fa-gas-pump {
+  color: white;
+  font-size: 1vh;
+  position: inherit;
+  left: 1vh;
+  bottom: 1.45vh;
+}
+
+.flash {
+  -webkit-animation: flash 1s;
+}
+
+@keyframes flash {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
