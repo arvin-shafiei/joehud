@@ -303,7 +303,7 @@ bottom: 0.75vh;
   height: 6vh !important;
   position: absolute;
   font-size: 5vh;
-  left: 28vh;
+  left: 24vh;
   bottom: 5.6vh;
   transform: rotate(-180deg);
 }
@@ -325,7 +325,7 @@ bottom: 0.75vh;
   width: 3vh !important;
   height: 3vh !important;
   position: absolute;
-  left: 25vh;
+  left: 21vh;
   bottom: 4vh;
 }
 
