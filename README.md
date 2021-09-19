@@ -33,7 +33,7 @@ Do not change the name or most parts will not function.*
 • esx_society
 • es_extended
 
-## USAGE
+## Usage
 • /hud - Opens HUD menu to enable/disable elements of the HUD (Prefrences saved to cache).
 
 • Seatbelt - Default Key [B] - Can be changed in FiveM settings
@@ -41,9 +41,12 @@ Do not change the name or most parts will not function.*
 • Speedlimiter- Default Key [CAPSLOCK] - Can be changed in FiveM settings
 
 /Seatbelt & /Speedlimiter
+
 ## Big thanks to
 https://forum.cfx.re/u/cosmokramer/ for snippets & inital inspiration.
+
 https://forum.cfx.re/u/Antoine for the colored map.
+
 https://loading.io/progress/ for the loading-Bar library.
 
 
