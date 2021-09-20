@@ -12,7 +12,6 @@ files {
     'html/style.css',
 }
 
-shared_script '@es_extended/imports.lua'
 
 client_scripts {
     'client.lua',

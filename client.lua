@@ -11,16 +11,17 @@ local minimap = RequestScaleformMovie("minimap")
 local hunger
 local thirst
 
-RegisterNetEvent('esx:playerLoaded')
-AddEventHandler('esx:playerLoaded', function(xPlayer)
-	ESX.PlayerData = xPlayer
- 	ESX.PlayerLoaded = true
-end)
+Citizen.CreateThread(function()
+    while ESX == nil do
+        TriggerEvent('esx:getSharedObject', function(obj) ESX = obj end)
+    end
 
-RegisterNetEvent('esx:onPlayerLogout')
-AddEventHandler('esx:onPlayerLogout', function()
-	ESX.PlayerLoaded = false
-	ESX.PlayerData = {}
+    while ESX.GetPlayerData().job == nil do
+		Citizen.Wait(100)
+	end
+
+	PlayerLoaded = true
+	ESX.PlayerData = ESX.GetPlayerData()
 end)
 
 RegisterNetEvent('esx:setJob')
@@ -42,7 +43,7 @@ local wasInCar     = false
 
 Citizen.CreateThread(function()
 	while true do
-		local car = GetVehiclePedIsIn(ESX.PlayerData.ped)
+		local car = GetVehiclePedIsIn(PlayerPedId())
 		if car ~= 0 and (wasInCar or IsCar(car)) then
 			wasInCar = true
 			
@@ -59,12 +60,12 @@ Citizen.CreateThread(function()
 			   and speedBuffer[1] > 19.25 
 			   and (speedBuffer[2] - speedBuffer[1]) > (speedBuffer[1] * 0.255) then
 			   
-				local co = GetEntityCoords(ESX.PlayerData.ped)
-				local fw = Fwv(ESX.PlayerData.ped)
-				SetEntityCoords(ESX.PlayerData.ped, co.x + fw.x, co.y + fw.y, co.z - 0.47, true, true, true)
-				SetEntityVelocity(ESX.PlayerData.ped, velBuffer[2].x, velBuffer[2].y, velBuffer[2].z)
+				local co = GetEntityCoords(PlayerPedId())
+				local fw = Fwv(PlayerPedId())
+				SetEntityCoords(PlayerPedId(), co.x + fw.x, co.y + fw.y, co.z - 0.47, true, true, true)
+				SetEntityVelocity(PlayerPedId(), velBuffer[2].x, velBuffer[2].y, velBuffer[2].z)
 				Citizen.Wait(500)
-				SetPedToRagdoll(ESX.PlayerData.ped, 1000, 1000, 0, 0, 0, 0)
+				SetPedToRagdoll(PlayerPedId(), 1000, 1000, 0, 0, 0, 0)
 			end
 				
 			velBuffer[2] = velBuffer[1]
@@ -109,7 +110,7 @@ end
 Citizen.CreateThread( function()
 	while true do 
 		local sleep = 500  
-		local vehicle = GetVehiclePedIsIn(ESX.PlayerData.ped, false)
+		local vehicle = GetVehiclePedIsIn(PlayerPedId(), false)
 		local vehicleModel = GetEntityModel(vehicle)
 		local speed = GetEntitySpeed(vehicle)
 		local float Max = GetVehicleModelMaxSpeed(vehicleModel)
@@ -117,9 +118,9 @@ Citizen.CreateThread( function()
 
         SendNUIMessage({talking = isTalking})
         RegisterCommand('speedlimiter', function()
-            local inVehicle = GetIsVehicleEngineRunning(GetVehiclePedIsIn(ESX.PlayerData.ped)) == 1 
+            local inVehicle = GetIsVehicleEngineRunning(GetVehiclePedIsIn(PlayerPedId())) == 1 
             if (inVehicle) then
-                if (GetPedInVehicleSeat(vehicle, -1) == ESX.PlayerData.ped) then	
+                if (GetPedInVehicleSeat(vehicle, -1) == PlayerPedId()) then	
                     if enableCruise == false then 
                         SetVehicleMaxSpeed(vehicle, speed)
                         enableCruise = true
@@ -151,7 +152,7 @@ Citizen.CreateThread(function()
     while true do
         Wait(1500)
         
-        if GetPedInVehicleSeat(GetVehiclePedIsIn(ESX.PlayerData.ped), -1) and GetIsVehicleEngineRunning(GetVehiclePedIsIn(ESX.PlayerData.ped)) == 1 then
+        if GetPedInVehicleSeat(GetVehiclePedIsIn(PlayerPedId()), -1) == PlayerPedId() and GetIsVehicleEngineRunning(GetVehiclePedIsIn(PlayerPedId())) == 1 then
             SendNUIMessage({showlimiter = true, showSpeedo = true})
             if Driving == false then
                 Driving = true
@@ -164,13 +165,13 @@ Citizen.CreateThread(function()
             SendNUIMessage({showlimiter = false, showSpeedo = false})
         end
         
-        if IsPedInAnyVehicle(ESX.PlayerData.ped, false) and GetIsVehicleEngineRunning(GetVehiclePedIsIn(ESX.PlayerData.ped)) == 1 then
+        if IsPedInAnyVehicle(PlayerPedId(), false) and GetIsVehicleEngineRunning(GetVehiclePedIsIn(PlayerPedId())) == 1 then
             SendNUIMessage({hideseatbelt = true})
         else
             SendNUIMessage({hideseatbelt = false})
         end    
 
-        if IsPedInAnyVehicle(ESX.PlayerData.ped, false) and mapon == true and GetIsVehicleEngineRunning(GetVehiclePedIsIn(ESX.PlayerData.ped)) == 1 then
+        if IsPedInAnyVehicle(PlayerPedId(-1), false) and mapon == true and GetIsVehicleEngineRunning(GetVehiclePedIsIn(PlayerPedId())) == 1 then
             ToggleRadar(true)
             SendNUIMessage({mapoutline = true})
         else
@@ -179,10 +180,10 @@ Citizen.CreateThread(function()
             SendNUIMessage({mapoutline = false})
         end
 
-        if IsEntityInWater(ESX.PlayerData.ped) then
+        if IsEntityInWater(PlayerPedId()) then
             Underwater = true
             SendNUIMessage({showOxygen = true})
-        elseif not IsEntityInWater(ESX.PlayerData.ped) then
+        elseif not IsEntityInWater(PlayerPedId()) then
             Underwater = false
             SendNUIMessage({showOxygen = false})
         end
@@ -195,7 +196,7 @@ Citizen.CreateThread(function()
             SendNUIMessage({showUi = true})
         end
         
-        if IsPedArmed(ESX.PlayerData.ped, 4 | 2) == 1 then
+        if IsPedArmed(PlayerPedId(), 4 | 2) == 1 then
             SendNUIMessage({showweap = true})
         else
             SendNUIMessage({showweap = false})
@@ -232,14 +233,14 @@ AddEventHandler('joehud:setInfo', function(info)
     local talking = NetworkIsPlayerTalking(PlayerId())
     local oxygen = GetPlayerUnderwaterTimeRemaining(PlayerId()) * 10
     local stamina = 100 - GetPlayerSprintStaminaRemaining(PlayerId())
-    local radioStatus = exports["rp-radio"]:IsRadioOn()
+    -- local radioStatus = exports["rp-radio"]:IsRadioOn()
 
     TriggerEvent('esx_status:getStatus', 'hunger', function(status) hunger = status.val / 10000 end)
 
     TriggerEvent('esx_status:getStatus', 'thirst', function(status) thirst = status.val / 10000 end)
 
 
-    SendNUIMessage({radio = radioStatus})
+    -- SendNUIMessage({radio = radioStatus})
 
     SendNUIMessage({
         action = "update_hud",
@@ -277,11 +278,11 @@ isinvehicle = function()
     Citizen.CreateThread(function()
         while true do
             Wait(speedfps)
-            local veh = GetVehiclePedIsUsing(ESX.PlayerData.ped, false)
+            local veh = GetVehiclePedIsUsing(PlayerPedId(), false)
             local speed = math.floor(GetEntitySpeed(veh) * 3.6)
             local vehhash = GetEntityModel(veh)
             local maxspeed = (GetVehicleModelMaxSpeed(vehhash) * 3.6) + 20
-            local vehicleClass = GetVehicleClass(GetVehiclePedIsIn(ESX.PlayerData.ped))
+            local vehicleClass = GetVehicleClass(GetVehiclePedIsIn(PlayerPedId()))
             local fuellevel = exports["LegacyFuel"]:GetFuel(veh)
 
             SendNUIMessage({speed = speed, maxspeed = maxspeed, action = "update_fuel", fuel = fuellevel, showFuel = true})
