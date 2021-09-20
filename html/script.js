@@ -608,6 +608,14 @@ window.addEventListener("message", function (event) {
     VoiceBar.animate(data.voicelevel / 100);
   }
 
+  if (data.radio == true) {
+    $("#Voice").removeClass("fa-microphone");
+    $("#Voice").addClass("fa-headset");
+  } else if (data.radio == false) {
+    $("#Voice").removeClass("fa-headset");
+    $("#Voice").addClass("fa-microphone");
+  }
+
   if (data.talking == 1) {
     VoiceBar.path.setAttribute("stroke", "#FFFF00");
   } else if (data.talking == false) {

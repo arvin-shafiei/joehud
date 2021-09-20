@@ -132,13 +132,7 @@ label {
   background: rgba(49, 49, 49, 0.6);
 }
 
-.FuelCircle {
-  position: relative;
-  width: 4vh !important;
-  height: 4vh !important;
-  margin: 0.3vh;
-  float: left;
-}
+
 
 #Job {
   text-align: right;
@@ -233,6 +227,14 @@ bottom: 0.75vh;
   bottom: 1.2vh;
 }
 
+.fa-headset {
+  color: white;
+  position: absolute;
+  font-size: 1.6vh;
+  left: 1.3vh;
+  bottom: 1.25vh;
+  }
+
 .fa-lungs {
   color: white;
   position: absolute;
@@ -253,7 +255,7 @@ bottom: 0.75vh;
   color: white;
   position: absolute;
   font-size: 1.7vh;
-  left: 1.3vh;
+  left: 1.2vh;
   bottom: 1.2vh;
 }
 
@@ -323,10 +325,10 @@ bottom: 0.75vh;
 
 #FuelCircle {
   width: 3vh !important;
-  height: 3vh !important;
+  height: 3.3vh !important;
   position: absolute;
-  left: 21vh;
-  bottom: 4vh;
+  left: 29.9vh;
+  bottom: 5vh;
 }
 
 .fa-gas-pump {
@@ -353,3 +355,71 @@ bottom: 0.75vh;
   }
 }
 
+@media only screen and (max-width: 1366px) {
+  .outline {
+    position: fixed;
+    bottom: 10vh;
+    left: 2.6vh;
+    /* overflow: hidden; */
+    width: 29.529vh;
+    text-align: center;
+  }
+
+  .mapborder {
+    width: 190px;
+    height: 160.25px;
+    border: 4px solid #9fa3ab;
+    border-radius: 50%;
+    box-shadow: 0px 0px 16px rgba(0,0,0,0.5); 
+    position: relative;
+    right: 36.50px;
+    top: 39.5px;
+    display: inline-block;
+  }
+}
+
+@media only screen and (max-width: 1280px) {
+  .outline {
+    position: fixed;
+    bottom: 10vh;
+    left: 2.8vh;
+    /* overflow: hidden; */
+    width: 29.529vh;
+    text-align: center;
+  }
+
+  .mapborder {
+    width: 180px;
+    height: 150.25px;
+    border: 4px solid #9fa3ab;
+    border-radius: 50%;
+    box-shadow: 0px 0px 16px rgba(0,0,0,0.5); 
+    position: relative;
+    right: 36.50px;
+    top: 39.5px;
+    display: inline-block;
+  }
+}
+
+@media only screen and (max-width: 1768px) {
+  .outline {
+    position: fixed;
+    bottom: 8.5vh;
+    left: 1.4vh;
+    /* overflow: hidden; */
+    width: 29.529vh;
+    text-align: center;
+  }
+
+  .mapborder {
+    width: 240px;
+    height: 210.25px;
+    border: 4px solid #9fa3ab;
+    border-radius: 50%;
+    box-shadow: 0px 0px 16px rgba(0,0,0,0.5); 
+    position: relative;
+    right: 36.50px;
+    top: 39.5px;
+    display: inline-block;
+  }
+}
