@@ -621,8 +621,6 @@ window.addEventListener("message", function (event) {
   } else if (data.talking == false) {
     VoiceBar.path.setAttribute("stroke", "#FFFFFF");
   }
-
-
   
   if (data.showOxygen == true && localStorage.getItem("oxygenisrel") == 'true') {
     $("#OxygenBar").show();

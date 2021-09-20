@@ -18,7 +18,7 @@ Do not change the name or most parts will not function.*
 
 • Seatbelt System & Speed limiter with mappable keybinds
 
-• 0.03ms - 0.10ms (If you have suggestions to reduce this please comment them)
+• 0.02ms - 0.10ms (If you have suggestions to reduce this please comment them)
 
 • Circle Map & Streamed minimap/bigmap
 
@@ -27,7 +27,7 @@ Do not change the name or most parts will not function.*
 • Server sided commands / functions
 
 # Voice Detection
-For pma-voice compatibility, you need to add the code below in `pma-voice/client/main` on line 201 or inside +cycleproximity command
+For pma-voice compatibility, you need to add the code below in `pma-voice/client/main` on line 193
 
 For mumble-voip compatibility, you need to add the code the code below to line ``mumble-voip/client.lua`` line 803
 
