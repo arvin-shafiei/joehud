@@ -18,7 +18,7 @@ Do not change the name or most parts will not function.*
 
 • Seatbelt System & Speed limiter with mappable keybinds
 
-• 0.08ms - 0.20ms (Needs to be optimized, if you have suggestions please comment them)
+• 0.03ms - 0.10ms (If you have suggestions to reduce this please comment them)
 
 • Circle Map & Streamed minimap/bigmap
 
@@ -26,13 +26,24 @@ Do not change the name or most parts will not function.*
 
 • Server sided commands / functions
 
+# Voice Detection
+For pma-voice compatibility, you need to add the code below in `pma-voice/client/main` on line 201 or inside +cycleproximity command
+
+For mumble-voip compatibility, you need to add the code the code below to line ``mumble-voip/client.lua`` line 803
+
+`exports['joehud']:Voicelevel(voiceMode)`
+
+(Images of where the lines should go have been put on the fourm post)
+
 ## Requirements
+
+• ESX Legacy for v1.01 (v1.0 works with older versions)
 
 • esx_status
 
 • esx_basicneeds
 
-• mumble-voip
+• mumble-voip / pma-voice
 
 • LegacyFuel
 
@@ -55,6 +66,8 @@ https://forum.cfx.re/u/cosmokramer/ for snippets & inital inspiration.
 https://forum.cfx.re/u/Antoine for the colored map.
 
 https://loading.io/progress/ for the loading-Bar library.
+
+https://forum.cfx.re/u/calvin_christian massive help with rehaul.
 
 
 ## License
