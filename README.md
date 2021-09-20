@@ -37,7 +37,7 @@ For mumble-voip compatibility, you need to add the code the code below to line `
 
 ## Requirements
 
-• ESX Legacy for v1.01 (v1.0 works with older versions)
+• ESX 
 
 • esx_status
 

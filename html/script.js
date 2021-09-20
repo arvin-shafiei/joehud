@@ -241,7 +241,6 @@ if (localStorage.getItem("armouron") == null ) {
   localStorage.setItem('armouron', 'true');
 }
 
-
 var balancetogglemenu = document.getElementById("showbalanceandjob");
 function balancetoggle() {
   if (balancetogglemenu.checked == true){
@@ -260,8 +259,6 @@ if (localStorage.getItem("balanceon") == 'true') {
   $("#balancefoil").fadeOut()
   balancetogglemenu.checked = false;
 }
-
-
 
 var armourreltogglemenu = document.getElementById("armourrel");
 function armourrelevant() {

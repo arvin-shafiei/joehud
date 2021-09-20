@@ -233,14 +233,14 @@ AddEventHandler('joehud:setInfo', function(info)
     local talking = NetworkIsPlayerTalking(PlayerId())
     local oxygen = GetPlayerUnderwaterTimeRemaining(PlayerId()) * 10
     local stamina = 100 - GetPlayerSprintStaminaRemaining(PlayerId())
-    -- local radioStatus = exports["rp-radio"]:IsRadioOn()
+    local radioStatus = exports["rp-radio"]:IsRadioOn()
 
     TriggerEvent('esx_status:getStatus', 'hunger', function(status) hunger = status.val / 10000 end)
 
     TriggerEvent('esx_status:getStatus', 'thirst', function(status) thirst = status.val / 10000 end)
 
 
-    -- SendNUIMessage({radio = radioStatus})
+    SendNUIMessage({radio = radioStatus})
 
     SendNUIMessage({
         action = "update_hud",
