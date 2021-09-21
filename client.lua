@@ -74,10 +74,8 @@ Citizen.CreateThread(function()
             function seatbelt()
 				beltOn = not beltOn				  
 				if beltOn then
-                    ESX.ShowNotification('Memasang seatbelt', 'success')
                     SendNUIMessage({seatbelton = true})
 				else
-                    ESX.ShowNotification('Melepas seatbelt', 'error')
                     SendNUIMessage({seatbelton = false})
                 end 
 		    end
