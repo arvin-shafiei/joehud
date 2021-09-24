@@ -574,12 +574,13 @@ window.addEventListener("message", function (event) {
     HungerBar.animate(data.hunger / 100);
     ThirstBar.animate(data.thirst / 100);
     StaminaBar.animate(data.stamina / 100)
-    $("#job").text(data.job);
-    $("#cashtext").text(data.money);
-    $("#banktext").text(data.bank);
-    $("#dirtytext").text(data.blackMoney);
-    $("#societytext").text(data.society);
   }
+
+  $("#job").text(data.job);
+  $("#cashtext").text(data.money);
+  $("#banktext").text(data.bank);
+  $("#dirtytext").text(data.blackMoney);
+  $("#societytext").text(data.society);
 
   if (data.oxygen >= 0) {
   OxygenBar.animate(data.oxygen / 100);
@@ -630,8 +631,6 @@ window.addEventListener("message", function (event) {
   } else if (data.showOxygen == true && localStorage.getItem("oxygenisrel") == 'false') {
     $("#OxygenBar").show();
   } 
-
-
 
   if (data.armor < 1, localStorage.getItem("armourrele") == 'false') {
     $("#ArmourBar").fadeIn();

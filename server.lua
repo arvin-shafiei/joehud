@@ -80,6 +80,7 @@ end, false)
 RegisterCommand("showall", function(source, args, rawCommand)
     local _source = source
     if (_source > 0) then
+        TriggerClientEvent("joehud:showsociety", source)
         TriggerClientEvent("joehud:showjob", source)
         TriggerClientEvent("joehud:showcash", source)
         TriggerClientEvent("joehud:showbank", source)
@@ -98,6 +99,16 @@ RegisterCommand("hud", function(source, args, rawCommand)
         print("This command was executed by the server console, RCON client, or a resource.")
     end
 end, false)
+
+RegisterCommand("society", function(source, args, rawCommand)
+    local _source = source
+    if (_source > 0) then
+        TriggerClientEvent("joehud:showsociety", source)
+    else
+        print("This command was executed by the server console, RCON client, or a resource.")
+    end
+end, false)
+
 
 -- DEV IN SOME ENCRYPTION (TO FLEX ON PEOPLE WHO DON'T HAVE ACCESS)
 -- Person 1: How do you have the black circle in your hud
