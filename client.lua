@@ -188,9 +188,12 @@ Citizen.CreateThread(function()
             hideseatbelt = true
             showlimiter = true
             showSpeedo = true
+            print(mapon)
             if mapon then
                 ToggleRadar(true)
-                mapoutline = true  
+                mapoutline = true
+            else
+                ToggleRadar(false)
             end
             if Driving == false then
                 Driving = true
@@ -264,14 +267,14 @@ AddEventHandler('joehud:setInfo', function(info)
                    
     local player = PlayerPedId()
 
-    local radioStatus = exports["rp-radio"]:IsRadioOn()
+    --local radioStatus = exports["rp-radio"]:IsRadioOn()
 
     TriggerEvent('esx_status:getStatus', 'hunger', function(status) hunger = status.val / 10000 end)
 
     TriggerEvent('esx_status:getStatus', 'thirst', function(status) thirst = status.val / 10000 end)
 
 
-    SendNUIMessage({radio = radioStatus})
+    --SendNUIMessage({radio = radioStatus})
 
         if(PlayerData ~= nil) and (PlayerData.job ~= nil) then
             jobName = PlayerData.job.label..' - '..PlayerData.job.grade_label
@@ -387,10 +390,12 @@ Citizen.CreateThread(function()
 end)
 
 TriggerVehicleLoop = function()
-	Citizen.CreateThread(function()
-		ToggleRadar(true)
-        SetRadarBigmapEnabled(false, false)
-	end)
+    if mapon then
+	    Citizen.CreateThread(function()
+		    ToggleRadar(true)
+            SetRadarBigmapEnabled(false, false)
+	    end)
+    end
 end
 
 ToggleRadar = function(state)
