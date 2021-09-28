@@ -1,3 +1,4 @@
+local Driving = false;
 local Underwater = false;
 local enableCruise = false;
 
