@@ -1,8 +1,9 @@
 fx_version 'cerulean'
+game 'gta5'
+
 name 'joehud'
 author 'joerogan#0001 / CosmoKramer'
 description 'HUD & Seatbelt & Speedlimiter System'
-game 'gta5'
 
 ui_page 'html/ui.html'
 
@@ -12,10 +13,6 @@ files {
     'html/style.css',
 }
 
-client_scripts {
-    'client.lua',
-}
+client_script 'client.lua'
 
-server_scripts {
-    'server.lua'
-}
+server_script 'server.lua'
