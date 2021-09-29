@@ -3,7 +3,7 @@ game 'gta5'
 
 name 'joehud'
 author 'joerogan#0001 / CosmoKramer'
-description 'HUD & Seatbelt & Speedlimiter System'
+description 'HUD, Seatbelt & Speedlimiter System'
 
 ui_page 'html/ui.html'
 
@@ -13,6 +13,10 @@ files {
     'html/style.css',
 }
 
-client_script 'client.lua'
+client_scripts {
+ 'client.lua'
+}
 
-server_script 'server.lua'
+server_scripts {
+ 'server.lua'
+}
