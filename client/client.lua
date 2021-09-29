@@ -10,13 +10,12 @@ local Keys = {
 	["NENTER"] = 201, ["N4"] = 108, ["N5"] = 60, ["N6"] = 107, ["N+"] = 96, ["N-"] = 97, ["N7"] = 117, ["N8"] = 61, ["N9"] = 118
 }
 
-local society, hunger, thirst
 local mapon, checkvehclass = true, true
 local speedfps = Config.SpeedFPS
 local minimap = RequestScaleformMovie("minimap")
 local speedBuffer, velBuffer  = {}, {}
 local Driving, Underwater, enableCruise, wasInCar = false, false, false, false
-local lastJob, lastcash, lastbank, lastdirty, lastsociety = nil, nil, nil, nil, nil
+local lastJob, lastcash, lastbank, lastdirty, lastsociety, society, hunger, thirst
 local ind = {l = false, r = false}
 
 SetRadarZoom(1150)
@@ -226,11 +225,11 @@ RegisterNetEvent('joehud:setInfo')
 AddEventHandler('joehud:setInfo', function(info)
     local player = PlayerPedId()
 
-    if PlayerData.job ~= nil then
-        if PlayerData.job.label ~= nil and PlayerData.job.grade_label ~= nil then
+    if ESX.PlayerData.job ~= nil then
+        if ESX.PlayerData.job.grade_name ~= nil and ESX.PlayerData.job.grade_name == 'boss' then
             ESX.TriggerServerCallback('esx_society:getSocietyMoney', function(money)
             society = money
-            end, PlayerData.job.name)
+            end, ESX.PlayerData.job.name)
         else
             society =  0
         end
@@ -245,12 +244,9 @@ AddEventHandler('joehud:setInfo', function(info)
         SendNUIMessage({radio = radioStatus})
     end
 
-        if(PlayerData ~= nil) and (PlayerData.job ~= nil) then
-            jobName = PlayerData.job.label..' - '..PlayerData.job.grade_label
-            if(lastJob ~= jobName) then
-                lastJob = jobName
-                SendNUIMessage({job = jobName})
-            end
+        if(lastjob ~= info['job']) then
+            lastjob = info['job']
+            SendNUIMessage({job = info['job']})
         end
 
         if(lastcash ~= info['money']) then
