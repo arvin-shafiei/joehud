@@ -24,25 +24,24 @@ ESX = nil
 
 Citizen.CreateThread(function()
     while ESX == nil do
-        TriggerEvent('esx:getSharedObject', function(obj)
-            ESX = obj
-        end)
+        TriggerEvent('esx:getSharedObject', function(obj) ESX = obj end)
         Citizen.Wait(0)
     end
-    if PlayerData == nil or PlayerData.job == nil then
-        PlayerData = ESX.GetPlayerData()
+
+	while ESX.GetPlayerData().job == nil do
+		Citizen.Wait(10)
     end
-    loaded = true
 end)
 
 RegisterNetEvent('esx:playerLoaded')
 AddEventHandler('esx:playerLoaded', function(xPlayer)
-  PlayerData = xPlayer
+	ESX.PlayerData = xPlayer
+	ESX.PlayerLoaded = true
 end)
 
 RegisterNetEvent('esx:setJob')
 AddEventHandler('esx:setJob', function(job)
-  PlayerData.job = job
+    ESX.PlayerData.job = job
 end)
 
 RegisterKeyMapping('speedlimiter', 'SpeedLimiter', 'keyboard', 'CAPITAL')
@@ -226,7 +225,7 @@ AddEventHandler('joehud:setInfo', function(info)
     local player = PlayerPedId()
 
     if ESX.PlayerData.job ~= nil then
-        if ESX.PlayerData.job.grade_name ~= nil and ESX.PlayerData.job.grade_name == 'boss' then
+        if ESX.PlayerData.job.label ~= nil and ESX.PlayerData.job.grade_label ~= nil then
             ESX.TriggerServerCallback('esx_society:getSocietyMoney', function(money)
             society = money
             end, ESX.PlayerData.job.name)
