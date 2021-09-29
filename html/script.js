@@ -546,14 +546,9 @@ if (localStorage.getItem("mapon") == null ) {
   }).then(resp => resp.json()).then(resp => console.log(resp));
 }
 
-
-
-
-
 const CancelMenu = () => {
   $.post(`https://joehud/cancel`);
 };
-
 
 document.onkeyup = function (event) {
   event = event || window.event;
@@ -562,8 +557,6 @@ document.onkeyup = function (event) {
     CancelMenu();
   }
 };
-
-
 
 window.addEventListener("message", function (event) {
   let data = event.data;
