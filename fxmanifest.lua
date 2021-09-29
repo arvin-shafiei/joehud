@@ -20,3 +20,9 @@ client_scripts {
 server_scripts {
  'server.lua'
 }
+
+dependencies {
+    'es_extended',
+    'esx_status',
+    'esx_society'
+}
