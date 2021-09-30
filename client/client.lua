@@ -53,44 +53,8 @@ end, false)
 
 Citizen.CreateThread(function()
 	while true do
-		local sleep = 500  
-        local isTalking = NetworkIsPlayerTalking(PlayerId())
-        SendNUIMessage({talking = isTalking})
-        
 		if IsPedInAnyVehicle(PlayerPedId(), false) then
             local vehicle = GetVehiclePedIsIn(PlayerPedId(), false)
-            local vehicleModel = GetEntityModel(vehicle)
-            local speed = GetEntitySpeed(vehicle)
-            local Max = GetVehicleModelEstimatedMaxSpeed(vehicleModel)
-
-            RegisterCommand('speedlimiter', function()
-                local inVehicle = GetIsVehicleEngineRunning(GetVehiclePedIsIn(PlayerPedId())) == 1 
-                if (inVehicle) then
-                    if (GetPedInVehicleSeat(vehicle, -1) == PlayerPedId()) then	
-                        if enableCruise == false then 
-                            SetVehicleMaxSpeed(vehicle, speed)
-                            enableCruise = true
-                            SendNUIMessage({
-                                speedlimiter = true
-                            })
-                        elseif enableCruise == true then
-                            SetVehicleMaxSpeed(vehicle, GetVehicleHandlingFloat(vehicle,"CHandlingData","fInitialDriveMaxFlatVel"))
-                            enableCruise = false
-                            SendNUIMessage({
-                                speedlimiter = false
-                            })
-                        else
-                            SetVehicleMaxSpeed(vehicle, Max)
-                            enableCruise = false
-                            SendNUIMessage({
-                                speedlimiter = false
-                            })
-                        end 
-                    end
-                    Wait(10)
-                end
-            end, false)
-
 			wasInCar = true
 			
 			speedBuffer[2] = speedBuffer[1]
@@ -118,9 +82,9 @@ Citizen.CreateThread(function()
 	end
 end)
 
-function seatbelt()
+function seatbelt()	
     if IsPedInAnyVehicle(PlayerPedId(), false) then
-    beltOn = not beltOn	
+        beltOn = not beltOn
         if beltOn then
             SendNUIMessage({seatbelton = true})
             DisableControlAction(0, 75) 
@@ -141,6 +105,47 @@ Fwv = function (entity)
     hr = hr * 0.0174533
     return { x = math.cos(hr) * 2.0, y = math.sin(hr) * 2.0 }
 end
+
+Citizen.CreateThread( function()
+	while true do 
+		local sleep = 500  
+		local vehicle = GetVehiclePedIsIn(PlayerPedId(), false)
+		local vehicleModel = GetEntityModel(vehicle)
+		local speed = GetEntitySpeed(vehicle)
+		local Max = GetVehicleModelEstimatedMaxSpeed(vehicleModel)
+        local isTalking = NetworkIsPlayerTalking(PlayerId())
+
+        SendNUIMessage({talking = isTalking})
+        RegisterCommand('speedlimiter', function()
+            local inVehicle = GetIsVehicleEngineRunning(GetVehiclePedIsIn(PlayerPedId())) == 1 
+            if (inVehicle) then
+                if (GetPedInVehicleSeat(vehicle, -1) == PlayerPedId()) then	
+                    if enableCruise == false then 
+                        SetVehicleMaxSpeed(vehicle, speed)
+                        enableCruise = true
+                        SendNUIMessage({
+                            speedlimiter = true
+                        })
+                    elseif enableCruise == true then
+                        SetVehicleMaxSpeed(vehicle, GetVehicleHandlingFloat(vehicle,"CHandlingData","fInitialDriveMaxFlatVel"))
+                        enableCruise = false
+                        SendNUIMessage({
+                            speedlimiter = false
+                        })
+                    else
+                        SetVehicleMaxSpeed(vehicle, Max)
+                        enableCruise = false
+                        SendNUIMessage({
+                            speedlimiter = false
+                        })
+                    end 
+                end
+                Wait(10)
+            end
+        end, false)
+        Wait(sleep)
+    end
+end)
 
 Citizen.CreateThread(function()
     while true do
