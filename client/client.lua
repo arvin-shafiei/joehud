@@ -53,14 +53,50 @@ end, false)
 
 Citizen.CreateThread(function()
 	while true do
-		local car = GetVehiclePedIsIn(PlayerPedId())
+		local sleep = 500  
+        local isTalking = NetworkIsPlayerTalking(PlayerId())
+        SendNUIMessage({talking = isTalking})
+        
 		if IsPedInAnyVehicle(PlayerPedId(), false) then
+            local vehicle = GetVehiclePedIsIn(PlayerPedId(), false)
+            local vehicleModel = GetEntityModel(vehicle)
+            local speed = GetEntitySpeed(vehicle)
+            local Max = GetVehicleModelEstimatedMaxSpeed(vehicleModel)
+
+            RegisterCommand('speedlimiter', function()
+                local inVehicle = GetIsVehicleEngineRunning(GetVehiclePedIsIn(PlayerPedId())) == 1 
+                if (inVehicle) then
+                    if (GetPedInVehicleSeat(vehicle, -1) == PlayerPedId()) then	
+                        if enableCruise == false then 
+                            SetVehicleMaxSpeed(vehicle, speed)
+                            enableCruise = true
+                            SendNUIMessage({
+                                speedlimiter = true
+                            })
+                        elseif enableCruise == true then
+                            SetVehicleMaxSpeed(vehicle, GetVehicleHandlingFloat(vehicle,"CHandlingData","fInitialDriveMaxFlatVel"))
+                            enableCruise = false
+                            SendNUIMessage({
+                                speedlimiter = false
+                            })
+                        else
+                            SetVehicleMaxSpeed(vehicle, Max)
+                            enableCruise = false
+                            SendNUIMessage({
+                                speedlimiter = false
+                            })
+                        end 
+                    end
+                    Wait(10)
+                end
+            end, false)
+
 			wasInCar = true
 			
 			speedBuffer[2] = speedBuffer[1]
-			speedBuffer[1] = GetEntitySpeed(car)
+			speedBuffer[1] = GetEntitySpeed(vehicle)
 			
-			if speedBuffer[2] ~= nil and not beltOn and GetEntitySpeedVector(car, true).y > 1.0  and speedBuffer[1] > 19.25 and (speedBuffer[2] - speedBuffer[1]) > (speedBuffer[1] * 0.255) then
+			if speedBuffer[2] ~= nil and not beltOn and GetEntitySpeedVector(vehicle, true).y > 1.0  and speedBuffer[1] > 19.25 and (speedBuffer[2] - speedBuffer[1]) > (speedBuffer[1] * 0.255) then
 				local co = GetEntityCoords(PlayerPedId())
 				local fw = Fwv(PlayerPedId())
 
@@ -71,7 +107,7 @@ Citizen.CreateThread(function()
 			end
 				
 			velBuffer[2] = velBuffer[1]
-			velBuffer[1] = GetEntityVelocity(car)
+			velBuffer[1] = GetEntityVelocity(vehicle)
             
 		elseif wasInCar then
             wasInCar = false
@@ -83,8 +119,8 @@ Citizen.CreateThread(function()
 end)
 
 function seatbelt()
-    beltOn = not beltOn	
     if IsPedInAnyVehicle(PlayerPedId(), false) then
+    beltOn = not beltOn	
         if beltOn then
             SendNUIMessage({seatbelton = true})
             DisableControlAction(0, 75) 
@@ -105,47 +141,6 @@ Fwv = function (entity)
     hr = hr * 0.0174533
     return { x = math.cos(hr) * 2.0, y = math.sin(hr) * 2.0 }
 end
-
-Citizen.CreateThread( function()
-	while true do 
-		local sleep = 500  
-		local vehicle = GetVehiclePedIsIn(PlayerPedId(), false)
-		local vehicleModel = GetEntityModel(vehicle)
-		local speed = GetEntitySpeed(vehicle)
-		local Max = GetVehicleModelEstimatedMaxSpeed(vehicleModel)
-        local isTalking = NetworkIsPlayerTalking(PlayerId())
-
-        SendNUIMessage({talking = isTalking})
-        RegisterCommand('speedlimiter', function()
-            local inVehicle = GetIsVehicleEngineRunning(GetVehiclePedIsIn(PlayerPedId())) == 1 
-            if (inVehicle) then
-                if (GetPedInVehicleSeat(vehicle, -1) == PlayerPedId()) then	
-                    if enableCruise == false then 
-                        SetVehicleMaxSpeed(vehicle, speed)
-                        enableCruise = true
-                        SendNUIMessage({
-                            speedlimiter = true
-                        })
-                    elseif enableCruise == true then
-                        SetVehicleMaxSpeed(vehicle, GetVehicleHandlingFloat(vehicle,"CHandlingData","fInitialDriveMaxFlatVel"))
-                        enableCruise = false
-                        SendNUIMessage({
-                            speedlimiter = false
-                        })
-                    else
-                        SetVehicleMaxSpeed(vehicle, Max)
-                        enableCruise = false
-                        SendNUIMessage({
-                            speedlimiter = false
-                        })
-                    end 
-                end
-                Wait(10)
-            end
-        end, false)
-        Wait(sleep)
-    end
-end)
 
 Citizen.CreateThread(function()
     while true do
@@ -193,7 +188,7 @@ Citizen.CreateThread(function()
                 mapoutline = mapoutline})
         end
 
-        if IsEntityInWater(PlayerPedId()) then
+        if IsEntityInWater(player) then
             Underwater = true
         else 
             Underwater = false
@@ -205,7 +200,7 @@ Citizen.CreateThread(function()
             showUi = true
         end
         
-        if IsPedArmed(PlayerPedId(), 4 | 2) == 1 then
+        if IsPedArmed(player, 4 | 2) == 1 then
             showweap = true
         else
             showweap = false
