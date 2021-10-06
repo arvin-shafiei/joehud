@@ -14,11 +14,10 @@ local mapon, checkvehclass = true, true
 local speedfps = Config.SpeedFPS
 local minimap = RequestScaleformMovie("minimap")
 local speedBuffer, velBuffer  = {}, {}
-local Driving, Underwater, enableCruise, wasInCar = false, false, false, false
+local Driving, Underwater, enableCruise, wasInCar, pedinVeh, beltOn = false, false, false, false, false, false
 local lastJob, lastcash, lastbank, lastdirty, lastsociety, society, hunger, thirst
+local player = PlayerPedId()
 local ind = {l = false, r = false}
-
-SetRadarZoom(1150)
 
 ESX = nil
 
@@ -53,21 +52,21 @@ end, false)
 
 Citizen.CreateThread(function()
 	while true do
-		if IsPedInAnyVehicle(PlayerPedId(), false) then
-            local vehicle = GetVehiclePedIsIn(PlayerPedId(), false)
+		if IsPedInAnyVehicle(player, false) then
+            local vehicle = GetVehiclePedIsIn(player, false)
 			wasInCar = true
 			
 			speedBuffer[2] = speedBuffer[1]
 			speedBuffer[1] = GetEntitySpeed(vehicle)
 			
 			if speedBuffer[2] ~= nil and not beltOn and GetEntitySpeedVector(vehicle, true).y > 1.0  and speedBuffer[1] > 19.25 and (speedBuffer[2] - speedBuffer[1]) > (speedBuffer[1] * 0.255) then
-				local co = GetEntityCoords(PlayerPedId())
-				local fw = Fwv(PlayerPedId())
+				local co = GetEntityCoords(player)
+				local fw = Fwv(player)
 
-				SetEntityCoords(PlayerPedId(), co.x + fw.x, co.y + fw.y, co.z - 0.47, true, true, true)
-				SetEntityVelocity(PlayerPedId(), velBuffer[2].x, velBuffer[2].y, velBuffer[2].z)
+				SetEntityCoords(player, co.x + fw.x, co.y + fw.y, co.z - 0.47, true, true, true)
+				SetEntityVelocity(player, velBuffer[2].x, velBuffer[2].y, velBuffer[2].z)
 				Citizen.Wait(500)
-				SetPedToRagdoll(PlayerPedId(), 1000, 1000, 0, 0, 0, 0)
+				SetPedToRagdoll(player, 1000, 1000, 0, 0, 0, 0)
 			end
 				
 			velBuffer[2] = velBuffer[1]
@@ -83,7 +82,7 @@ Citizen.CreateThread(function()
 end)
 
 function seatbelt()	
-    if IsPedInAnyVehicle(PlayerPedId(), false) then
+    if pedinVeh then
         beltOn = not beltOn
         if beltOn then
             SendNUIMessage({seatbelton = true})
@@ -108,8 +107,7 @@ end
 
 Citizen.CreateThread( function()
 	while true do 
-		local sleep = 500  
-		local vehicle = GetVehiclePedIsIn(PlayerPedId(), false)
+		local vehicle = GetVehiclePedIsIn(player, false)
 		local vehicleModel = GetEntityModel(vehicle)
 		local speed = GetEntitySpeed(vehicle)
 		local Max = GetVehicleModelEstimatedMaxSpeed(vehicleModel)
@@ -117,9 +115,9 @@ Citizen.CreateThread( function()
 
         SendNUIMessage({talking = isTalking})
         RegisterCommand('speedlimiter', function()
-            local inVehicle = GetIsVehicleEngineRunning(GetVehiclePedIsIn(PlayerPedId())) == 1 
+            local inVehicle = GetIsVehicleEngineRunning(GetVehiclePedIsIn(player)) == 1 
             if (inVehicle) then
-                if (GetPedInVehicleSeat(vehicle, -1) == PlayerPedId()) then	
+                if (GetPedInVehicleSeat(vehicle, -1) == player) then	
                     if enableCruise == false then 
                         SetVehicleMaxSpeed(vehicle, speed)
                         enableCruise = true
@@ -143,7 +141,7 @@ Citizen.CreateThread( function()
                 Wait(10)
             end
         end, false)
-        Wait(sleep)
+        Wait(500)
     end
 end)
 
@@ -151,9 +149,9 @@ Citizen.CreateThread(function()
     while true do
         Wait(1500)
 
-        local player = PlayerPedId()
-        local vehicle = GetVehiclePedIsIn(player, false)
-        local pedinVeh = IsPedInAnyVehicle(player, false)				
+        player = PlayerPedId()
+        pedinVeh = IsPedInAnyVehicle(player, false)	
+        local vehicle = GetVehiclePedIsIn(player, false)				
         local vehicleIsOn = GetIsVehicleEngineRunning(vehicle)
         local hideseatbelt, showlimiter, showSpeedo, mapoutline = false, false, false, false
         local showweap, showUi
@@ -163,6 +161,7 @@ Citizen.CreateThread(function()
             showlimiter = true
             showSpeedo = true
             if mapon then
+		SetRadarZoom(1150)
                 ToggleRadar(true)
                 mapoutline = true
             else
@@ -180,7 +179,6 @@ Citizen.CreateThread(function()
                 mapoutline = mapoutline})
         else 
             enableCruise = false
-            enginerunning = false
             showlimiter = false
             showSpeedo = false
             ToggleRadar(false)
@@ -272,10 +270,10 @@ AddEventHandler('joehud:setInfo', function(info)
         action = "update_hud",
         hp = GetEntityHealth(player) - 100,
         armor = GetPedArmour(player),
-        stamina = 100 - GetPlayerSprintStaminaRemaining(PlayerId()),
+        stamina = 100 - GetPlayerSprintStaminaRemaining(PlayerPedId()),
         hunger = hunger,
         thirst = thirst,
-        oxygen = GetPlayerUnderwaterTimeRemaining(PlayerId()) * 10,
+        oxygen = GetPlayerUnderwaterTimeRemaining(PlayerId()) * 10
     })
 end)
  
@@ -301,14 +299,14 @@ isinvehicle = function()
         while true do
             Wait(speedfps)
 
-        if IsPedInAnyVehicle(PlayerPedId(), false) then
-            local veh = GetVehiclePedIsIn(PlayerPedId(), false)
+        if IsPedInAnyVehicle(player, false) then
+            local veh = GetVehiclePedIsIn(player, false)
             local speed = math.floor(GetEntitySpeed(veh) * Config.Speed)
             local vehhash = GetEntityModel(veh)
             local maxspeed = (GetVehicleModelMaxSpeed(vehhash) * Config.Speed) + 20
     
         if checkvehclass then
-            local vehicleClass = GetVehicleClass(GetVehiclePedIsIn(PlayerPedId()))
+            local vehicleClass = GetVehicleClass(GetVehiclePedIsIn(player))
             if vehicleClass == 8 or vehicleClass == 14 or vehicleClass == 15 or vehicleClass == 16 then
                 checkvehclass = false
                 SendNUIMessage({hideseatbeltextra = true})
