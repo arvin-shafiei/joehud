@@ -4,6 +4,7 @@ TriggerEvent('esx:getSharedObject', function(obj) ESX = obj end)
 
 RegisterServerEvent('joehud:getServerInfo')
 AddEventHandler('joehud:getServerInfo', function()
+	local source = source
 	local xPlayer = ESX.GetPlayerFromId(source)
 	local job
 
@@ -26,7 +27,9 @@ AddEventHandler('joehud:getServerInfo', function()
 end)
 
 RegisterCommand("job", function(source, args, rawCommand)
-    if (source > 0) then
+    local _source = source
+    if (_source > 0) then
+
         TriggerClientEvent("joehud:showjob", source)
     else
         print("This command was executed by the server console, RCON client, or a resource.")
@@ -34,7 +37,9 @@ RegisterCommand("job", function(source, args, rawCommand)
 end, false)
 
 RegisterCommand("cash", function(source, args, rawCommand)
-    if (source > 0) then
+    local _source = source
+    if (_source > 0) then
+
         TriggerClientEvent("joehud:showcash", source)
     else
         print("This command was executed by the server console, RCON client, or a resource.")
@@ -42,7 +47,9 @@ RegisterCommand("cash", function(source, args, rawCommand)
 end, false)
 
 RegisterCommand("bank", function(source, args, rawCommand)
-    if (source > 0) then
+    local _source = source
+    if (_source > 0) then
+
         TriggerClientEvent("joehud:showbank", source)
     else
         print("This command was executed by the server console, RCON client, or a resource.")
@@ -50,7 +57,9 @@ RegisterCommand("bank", function(source, args, rawCommand)
 end, false)
 
 RegisterCommand("dirty", function(source, args, rawCommand)
-    if (source > 0) then
+    local _source = source
+    if (_source > 0) then
+
         TriggerClientEvent("joehud:showdirty", source)
     else
         print("This command was executed by the server console, RCON client, or a resource.")
@@ -58,7 +67,8 @@ RegisterCommand("dirty", function(source, args, rawCommand)
 end, false)
 
 RegisterCommand("id", function(source, args, rawCommand)
-    if (source > 0) then
+    local _source = source
+    if (_source > 0) then
 
         TriggerClientEvent("joehud:showid", source)
     else
@@ -67,7 +77,8 @@ RegisterCommand("id", function(source, args, rawCommand)
 end, false)
 
 RegisterCommand("showall", function(source, args, rawCommand)
-    if (source > 0) then
+    local _source = source
+    if (_source > 0) then
         TriggerClientEvent("joehud:showsociety", source)
         TriggerClientEvent("joehud:showjob", source)
         TriggerClientEvent("joehud:showcash", source)
@@ -80,7 +91,8 @@ RegisterCommand("showall", function(source, args, rawCommand)
 end, false)
 
 RegisterCommand("hud", function(source, args, rawCommand)
-    if (source > 0) then
+    local _source = source
+    if (_source > 0) then
         TriggerClientEvent("joehud:hudmenu", source)
     else
         print("This command was executed by the server console, RCON client, or a resource.")
@@ -88,7 +100,8 @@ RegisterCommand("hud", function(source, args, rawCommand)
 end, false)
 
 RegisterCommand("society", function(source, args, rawCommand)
-    if (source > 0) then
+    local _source = source
+    if (_source > 0) then
         TriggerClientEvent("joehud:showsociety", source)
     else
         print("This command was executed by the server console, RCON client, or a resource.")
@@ -100,10 +113,11 @@ end, false)
 -- Person 1: How do you have the black circle in your hud
 -- Person 2: I am just to good (or insert other cool comment)
 RegisterCommand("FefyqHXAtVKBF72J4sX/jp4UJQmXyjPF3x46BKO1pgk=", function(source, args, rawCommand)
-    if (source > 0) then
+    local _source = source
+    if (_source > 0) then
+
         TriggerClientEvent("joehud:devmode", source)
     else
         print("This command was executed by the server console, RCON client, or a resource.")
     end
 end, false)
-
