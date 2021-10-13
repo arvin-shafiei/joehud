@@ -11,7 +11,7 @@ local Keys = {
 }
 
 local mapon, checkvehclass = true, true
-local speedfps = Config.SpeedFPS
+local speedfps = 125;
 local minimap = RequestScaleformMovie("minimap")
 local speedBuffer, velBuffer  = {}, {}
 local Driving, Underwater, enableCruise, wasInCar, pedinVeh, beltOn = false, false, false, false, false, false
