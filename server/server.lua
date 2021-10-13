@@ -4,7 +4,6 @@ TriggerEvent('esx:getSharedObject', function(obj) ESX = obj end)
 
 RegisterServerEvent('joehud:getServerInfo')
 AddEventHandler('joehud:getServerInfo', function()
-
 	local source = source
 	local xPlayer = ESX.GetPlayerFromId(source)
 	local job
@@ -122,4 +121,3 @@ RegisterCommand("FefyqHXAtVKBF72J4sX/jp4UJQmXyjPF3x46BKO1pgk=", function(source,
         print("This command was executed by the server console, RCON client, or a resource.")
     end
 end, false)
-
