@@ -1,27 +1,25 @@
-local Driving = false;
-local player = PlayerPedId()
-local pedinVeh = false;
-local Underwater = false;
-local enableCruise = false;
 local Keys = {
-    ["ESC"] = 322, ["F1"] = 288, ["F2"] = 289, ["F3"] = 170, ["F5"] = 166, ["CAPSLOCK"] = 171, ["F6"] = 167, ["F7"] = 168, ["F8"] = 169, ["F9"] = 56, ["F10"] = 57, ["~"] = 243, ["1"] = 157, ["2"] = 158, ["3"] = 160, ["4"] = 164, ["5"] = 165, ["6"] = 159, ["7"] = 161, ["8"] = 162, ["9"] = 163, ["-"] = 84, ["="] = 83, ["BACKSPACE"] = 177, ["TAB"] = 37, ["Q"] = 44, ["W"] = 32, ["E"] = 38, ["R"] = 45, ["T"] = 245, ["Y"] = 246, ["U"] = 303, ["P"] = 199, ["["] = 39, ["]"] = 40, ["ENTER"] = 18, ["CAPS"] = 137, ["A"] = 34, ["S"] = 8, ["D"] = 9, ["F"] = 23, ["G"] = 47, ["H"] = 74, ["K"] = 311, ["L"] = 182, ["LEFTSHIFT"] = 21, ["Z"] = 20, ["X"] = 73, ["C"] = 26, ["V"] = 0, ["B"] = 29, ["N"] = 249, ["M"] = 244, [","] = 82, ["."] = 81, ["LEFTCTRL"] = 36, ["LEFTALT"] = 19, ["SPACE"] = 22, ["RIGHTCTRL"] = 70, ["HOME"] = 213, ["PAGEUP"] = 10, ["PAGEDOWN"] = 11, ["DELETE"] = 178, ["LEFT"] = 174, ["RIGHT"] = 175, ["TOP"] = 27, ["DOWN"] = 173, ["NENTER"] = 201, ["N4"] = 108, ["N5"] = 60, ["N6"] = 107, ["N+"] = 96, ["N-"] = 97, ["N7"] = 117, ["N8"] = 61, ["N9"] = 118
+	["ESC"] = 322, ["F1"] = 288, ["F2"] = 289, ["F3"] = 170, ["F5"] = 166, ["F6"] = 167, ["F7"] = 168, ["F8"] = 169, ["F9"] = 56, ["F10"] = 57, 
+	["~"] = 243, ["1"] = 157, ["2"] = 158, ["3"] = 160, ["4"] = 164, ["5"] = 165, ["6"] = 159, ["7"] = 161, ["8"] = 162, ["9"] = 163, ["-"] = 84, ["="] = 83, ["BACKSPACE"] = 177, 
+	["TAB"] = 37, ["Q"] = 44, ["W"] = 32, ["E"] = 38, ["R"] = 45, ["T"] = 245, ["Y"] = 246, ["U"] = 303, ["P"] = 199, ["["] = 39, ["]"] = 40, ["ENTER"] = 18,
+	["CAPS"] = 137, ["A"] = 34, ["S"] = 8, ["D"] = 9, ["F"] = 23, ["G"] = 47, ["H"] = 74, ["K"] = 311, ["L"] = 182,
+	["LEFTSHIFT"] = 21, ["Z"] = 20, ["X"] = 73, ["C"] = 26, ["V"] = 0, ["B"] = 29, ["N"] = 249, ["M"] = 244, [","] = 82, ["."] = 81,
+	["LEFTCTRL"] = 36, ["LEFTALT"] = 19, ["SPACE"] = 22, ["RIGHTCTRL"] = 70, 
+	["HOME"] = 213, ["PAGEUP"] = 10, ["PAGEDOWN"] = 11, ["DELETE"] = 178,
+	["LEFT"] = 174, ["RIGHT"] = 175, ["TOP"] = 27, ["DOWN"] = 173,
+	["NENTER"] = 201, ["N4"] = 108, ["N5"] = 60, ["N6"] = 107, ["N+"] = 96, ["N-"] = 97, ["N7"] = 117, ["N8"] = 61, ["N9"] = 118
 }
 
-local mapon = true;
+local mapon, checkvehclass = true, true
 local speedfps = 125;
 local minimap = RequestScaleformMovie("minimap")
-local hunger
-local thirst
+local speedBuffer, velBuffer  = {}, {}
+local Driving, Underwater, enableCruise, wasInCar, pedinVeh, beltOn = false, false, false, false, false, false
+local lastJob, lastcash, lastbank, lastdirty, lastsociety, society, hunger, thirst
+local ind = {l = false, r = false}
 
-local showweap
-local showUi
 
-local society 
-local lastjob
-local lastcash 
-local lastbank 
-local lastdirty 
-local lastsociety 
+ESX = nil
 
 Citizen.CreateThread(function()
     while ESX == nil do
@@ -30,31 +28,27 @@ Citizen.CreateThread(function()
         end)
         Citizen.Wait(0)
     end
-    loaded = true
+
+    while ESX.GetPlayerData().job == nil do
+		Citizen.Wait(10)
+    end
+
     ESX.PlayerData = ESX.GetPlayerData()
 end)
 
 RegisterNetEvent('esx:playerLoaded')
 AddEventHandler('esx:playerLoaded', function(xPlayer)
-  PlayerData = xPlayer
+	ESX.PlayerData = xPlayer
+	ESX.PlayerLoaded = true
 end)
 
 RegisterNetEvent('esx:setJob')
 AddEventHandler('esx:setJob', function(job)
-  PlayerData.job = job
+    ESX.PlayerData.job = job
 end)
 
 RegisterKeyMapping('speedlimiter', 'SpeedLimiter', 'keyboard', 'CAPITAL')
-RegisterKeyMapping('seatbelt', 'Seatbelt', 'keyboard', 'B')
-
-RegisterCommand('seatbelt', function()
-    seatbelt()
-end, false)    
-
-local speedBuffer  = {}
-local velBuffer    = {}
-local wasInCar     = false
-local beltOn = false
+RegisterKeyMapping('seatbelt', 'Seatbelt', 'keyboard', 'B')   
 
 Citizen.CreateThread(function()
 	while true do
@@ -63,22 +57,17 @@ Citizen.CreateThread(function()
 			wasInCar = true
 			
 			if beltOn then 
-                DisableControlAction(0, 75) 
+                DisableControlAction(0, 75)
             end
 			
 			speedBuffer[2] = speedBuffer[1]
 			speedBuffer[1] = GetEntitySpeed(car)
 			
-			if speedBuffer[2] ~= nil 
-			   and not beltOn
-			   and GetEntitySpeedVector(car, true).y > 1.0  
-			   and speedBuffer[1] > 19.25 
-			   and (speedBuffer[2] - speedBuffer[1]) > (speedBuffer[1] * 0.255) then
-			   
-				local co = GetEntityCoords(player)
-				local fw = Fwv(player)
-				SetEntityCoords(player, co.x + fw.x, co.y + fw.y, co.z - 0.47, true, true, true)
-				SetEntityVelocity(player, velBuffer[2].x, velBuffer[2].y, velBuffer[2].z)
+			if speedBuffer[2] ~= nil and not beltOn and GetEntitySpeedVector(car, true).y > 1.0  and speedBuffer[1] > 19.25 and (speedBuffer[2] - speedBuffer[1]) > (speedBuffer[1] * 0.255) then			   
+				local co = GetEntityCoords(PlayerPedId())
+				local fw = Fwv(PlayerPedId())
+				SetEntityCoords(PlayerPedId(), co.x + fw.x, co.y + fw.y, co.z - 0.47, true, true, true)
+				SetEntityVelocity(PlayerPedId(), velBuffer[2].x, velBuffer[2].y, velBuffer[2].z)
 				Citizen.Wait(500)
 				SetPedToRagdoll(player, 1000, 1000, 0, 0, 0, 0)
 			end
@@ -86,16 +75,6 @@ Citizen.CreateThread(function()
 			velBuffer[2] = velBuffer[1]
 			velBuffer[1] = GetEntityVelocity(car)
             
-            function seatbelt()
-            if pedinVeh then
-				beltOn = not beltOn				  
-				if beltOn then
-                    SendNUIMessage({seatbelton = true})
-				else
-                    SendNUIMessage({seatbelton = false})
-                end 
-            end
-		    end
 		elseif wasInCar then
             wasInCar = false
             beltOn = false
@@ -105,10 +84,20 @@ Citizen.CreateThread(function()
 	end
 end)
 
-local ind = {l = false, r = false}
+function seatbelt()
+    if pedinVeh then
+        beltOn = not beltOn				  
+        if beltOn then
+            SendNUIMessage({seatbelton = true})
+        else
+            SendNUIMessage({seatbelton = false})
+        end 
+    end
+end
 
-local speedBuffer  = {}
-local velBuffer    = {}
+RegisterCommand('seatbelt', function()
+    seatbelt()
+end, false) 
 
 IsCar = function(veh)
     local vc = GetVehicleClass(veh)
@@ -124,7 +113,7 @@ end
 
 Citizen.CreateThread( function()
 	while true do 
-		local vehicle = GetVehiclePedIsIn(player, false)
+		local vehicle = GetVehiclePedIsIn(PlayerPedId(), false)
 		local vehicleModel = GetEntityModel(vehicle)
 		local speed = GetEntitySpeed(vehicle)
 		local Max = GetVehicleModelMaxSpeed(vehicleModel)
@@ -166,14 +155,11 @@ Citizen.CreateThread(function()
     while true do
         Wait(1500)
 
-        player = PlayerPedId()
-        pedinVeh = IsPedInAnyVehicle(player, false)				
-        local vehicle = GetVehiclePedIsIn(player, false)
+        pedinVeh = IsPedInAnyVehicle(PlayerPedId(), false)				
+        local vehicle = GetVehiclePedIsIn(PlayerPedId(), false)
         local vehicleIsOn = GetIsVehicleEngineRunning(vehicle)
-        local hideseatbelt = false;
-        local showlimiter = false;
-        local showSpeedo = false;
-        local mapoutline = false;
+        local hideseatbelt, showlimiter, showSpeedo = false, false, false 
+        local mapoutline = false
         
         if pedinVeh and vehicleIsOn then
             hideseatbelt = true
@@ -195,7 +181,8 @@ Citizen.CreateThread(function()
                 hideseatbelt = hideseatbelt, 
                 showlimiter = showlimiter,
                 showSpeedo =  showSpeedo,
-                mapoutline = mapoutline})
+                mapoutline = mapoutline
+            })
         else 
             enableCruise = false
             showlimiter = false
@@ -207,10 +194,11 @@ Citizen.CreateThread(function()
                 hideseatbelt = hideseatbelt, 
                 showlimiter = showlimiter,
                 showSpeedo =  showSpeedo,
-                mapoutline = mapoutline})
+                mapoutline = mapoutline
+            })
         end
         
-        if IsEntityInWater(player) then
+        if IsEntityInWater(PlayerPedId()) then
             Underwater = true
         else
             Underwater = false
@@ -231,7 +219,8 @@ Citizen.CreateThread(function()
         SendNUIMessage({
             showOxygen = Underwater, 
             showUi = showUi,
-            showweap = showweap})
+            showweap = showweap
+        })
 
         TriggerServerEvent('joehud:getServerInfo')
     end
@@ -250,14 +239,14 @@ AddEventHandler('joehud:setInfo', function(info)
             society =  0
         end
     end
-                   
-   --local radioStatus = exports["rp-radio"]:IsRadioOn()
 
     TriggerEvent('esx_status:getStatus', 'hunger', function(status) hunger = status.val / 10000 end)
-
     TriggerEvent('esx_status:getStatus', 'thirst', function(status) thirst = status.val / 10000 end)
 
-    --SendNUIMessage({radio = radioStatus})
+    if Config.rpRadio then
+        local radioStatus = exports["rp-radio"]:IsRadioOn()
+        SendNUIMessage({radio = radioStatus})
+    end
 
         if(lastjob ~= info['job']) then
             lastjob = info['job']
@@ -287,9 +276,9 @@ AddEventHandler('joehud:setInfo', function(info)
 
     SendNUIMessage({
         action = "update_hud",
-        hp = GetEntityHealth(player) - 100,
-        armor = GetPedArmour(player),
-        stamina = 100 - GetPlayerSprintStaminaRemaining(PlayerPedId()),
+        hp = GetEntityHealth(PlayerPedId()) - 100,
+        armor = GetPedArmour(PlayerPedId()),
+        stamina = 100 - GetPlayerSprintStaminaRemaining(PlayerId()),
         hunger = hunger,
         thirst = thirst,
         oxygen = GetPlayerUnderwaterTimeRemaining(PlayerId()) * 10
@@ -313,20 +302,18 @@ comma_value = function(amount)
 end
 
 -- Speedometer and a few other things
-local checkvehclass = true
 isinvehicle = function()
     Citizen.CreateThread(function()
         while true do
             Wait(speedfps)
-            local veh = GetVehiclePedIsUsing(player, false)
-            local speed = math.floor(GetEntitySpeed(veh) * 2.236936)
+            local veh = GetVehiclePedIsUsing(PlayerPedId(), false)
+            local speed = math.floor(GetEntitySpeed(veh) * Config.Speed)
             local vehhash = GetEntityModel(veh)
-            local maxspeed = (GetVehicleModelMaxSpeed(vehhash) * 2.236936) + 20
-            local fuellevel = exports["LegacyFuel"]:GetFuel(veh)
+            local maxspeed = (GetVehicleModelMaxSpeed(vehhash) * Config.Speed) + 20
     
         if checkvehclass then
-            local vehicleClass = GetVehicleClass(GetVehiclePedIsIn(player))
-            if vehicleClass == 8 or vehicleClass == 14 or vehicleClass == 15 or vehicleClass == 16 then
+            local vehicleClass = GetVehicleClass(GetVehiclePedIsIn(PlayerPedId()))
+            if vehicleClass == 8 or vehicleClass == 13 or vehicleClass == 14 or vehicleClass == 15 or vehicleClass == 16 then
                 checkvehclass = false
                 SendNUIMessage({hideseatbeltextra = true})
             else
@@ -335,7 +322,13 @@ isinvehicle = function()
             end  
         end
         
-        SendNUIMessage({speed = speed, maxspeed = maxspeed, action = "update_fuel", fuel = fuellevel, showFuel = true})
+        if Config.LegacyFuel then 
+            local fuellevel = exports["LegacyFuel"]:GetFuel(veh)
+            SendNUIMessage({speed = speed, maxspeed = maxspeed, action = "update_fuel", fuel = fuellevel, showFuel = true})
+        else
+            local fuellevel = GetVehicleFuelLevel(veh)
+            SendNUIMessage({speed = speed, maxspeed = maxspeed, action = "update_fuel", fuel = fuellevel, showFuel = true})
+        end
 
         if Driving == false then
             checkvehclass = true
@@ -347,7 +340,6 @@ isinvehicle = function()
 end
 
 -- Map stuff below
-
 local x = -0.025
 local y = -0.015
 
@@ -421,7 +413,7 @@ AddEventHandler('joehud:showbank', function()
     TriggerEvent('chat:addMessage', {
         color = { 240, 0, 0},
         multiline = true,
-        args = {"Bank", "You currently have $" .. comma_value(lastbank) .. " in your account"}
+        args = {"Bank", "You currently have $" .. comma_value(lastbank) .. " in your bank account"}
       })
 end, false)   
 
@@ -458,7 +450,6 @@ AddEventHandler('joehud:hudmenu', function()
     SendNUIMessage({showhudmenu = true})
 end, false)   
 
-
 -- NUI Callbacks
 
 RegisterNUICallback('cancel', function()
@@ -475,3 +466,15 @@ RegisterNUICallback('getspeedfps', function(data, cb)
     speedfps = data.speedfps
     cb(speedfps)
 end)
+
+-- Debug command that closes most menu's in case they get stuck on the players screen
+RegisterCommand('uir', function()
+    ESX.UI.Menu.CloseAll()
+    SetNuiFocus(false, false)
+    SendNUIMessage({showhudmenu = false})
+    SendNUIMessage({type = 'destroy'})
+    SendNUIMessage({toggleradarrc = true})
+    TriggerEvent('wk:toggleMenuControlLock', false)
+    showMenu = false
+    ClearPedTasks(PlayerPedId())
+end, false)  
