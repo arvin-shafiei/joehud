@@ -219,6 +219,13 @@ Citizen.CreateThread(function()
     end
 end)
 
+Citizen.CreateThread( function()
+	while true do 
+        SendNUIMessage({talking = NetworkIsPlayerTalking(PlayerId())})
+        Wait(500)
+    end
+end)
+
 RegisterNetEvent('joehud:setInfo')
 AddEventHandler('joehud:setInfo', function(info)
 

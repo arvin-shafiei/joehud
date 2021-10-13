@@ -654,7 +654,6 @@ window.addEventListener("message", function (event) {
     $("#HungerIcon").toggleClass("flash");
   }
 
-  console.log(data.speedtext)
   if (data.speed > 0) {
     $("#SpeedIndicator").text(data.speed + " " + data.speedtext);
     let multiplier = data.maxspeed * 0.1;
