@@ -37,19 +37,9 @@ For mumble-voip compatibility, you need to add the code the code below to line `
 
 ## Requirements
 
-• ESX 
-
-• esx_status
+• es_extended
 
 • esx_basicneeds
-
-• mumble-voip / pma-voice
-
-• LegacyFuel
-
-• esx_society
-
-• es_extended
 
 ## Usage
 • /hud - Opens HUD menu to enable/disable elements of the HUD (Prefrences saved to cache).

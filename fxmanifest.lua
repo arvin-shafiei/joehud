@@ -4,7 +4,7 @@ game 'gta5'
 name 'joehud'
 author 'joerogan#0001 / CosmoKramer'
 description 'HUD, Seatbelt & Speedlimiter System'
-version '1.07'
+version '1.08'
 
 ui_page 'html/ui.html'
 
@@ -26,6 +26,5 @@ server_scripts {
 
 dependencies {
     'es_extended',
-    'esx_status',
-    'esx_society'
+    'esx_basicneeds'
 }

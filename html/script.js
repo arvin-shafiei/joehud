@@ -654,14 +654,15 @@ window.addEventListener("message", function (event) {
     $("#HungerIcon").toggleClass("flash");
   }
 
+  console.log(data.speedtext)
   if (data.speed > 0) {
-    $("#SpeedIndicator").text(data.speed + " MPH");
+    $("#SpeedIndicator").text(data.speed + " " + data.speedtext);
     let multiplier = data.maxspeed * 0.1;
     let SpeedoLimit = data.maxspeed + multiplier;
     Speedometer.animate(data.speed / SpeedoLimit);
     Speedometer.path.setAttribute("stroke", "white");
   } else if (data.speed == 0) {
-    $("#SpeedIndicator").text("0 MPH");
+    $("#SpeedIndicator").text("0 " + data.speedtext);
     Speedometer.path.setAttribute("stroke", "none");
   }
 

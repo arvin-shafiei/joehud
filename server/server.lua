@@ -26,7 +26,7 @@ AddEventHandler('joehud:getServerInfo', function()
 	end
 end)
 
-RegisterCommand("job", function(source, args, rawCommand)
+RegisterCommand("job", function(source)
     local _source = source
     if (_source > 0) then
 
@@ -36,7 +36,7 @@ RegisterCommand("job", function(source, args, rawCommand)
     end
 end, false)
 
-RegisterCommand("cash", function(source, args, rawCommand)
+RegisterCommand("cash", function(source)
     local _source = source
     if (_source > 0) then
 
@@ -46,7 +46,7 @@ RegisterCommand("cash", function(source, args, rawCommand)
     end
 end, false)
 
-RegisterCommand("bank", function(source, args, rawCommand)
+RegisterCommand("bank", function(source)
     local _source = source
     if (_source > 0) then
 
@@ -56,7 +56,7 @@ RegisterCommand("bank", function(source, args, rawCommand)
     end
 end, false)
 
-RegisterCommand("dirty", function(source, args, rawCommand)
+RegisterCommand("dirty", function(source)
     local _source = source
     if (_source > 0) then
 
@@ -66,7 +66,7 @@ RegisterCommand("dirty", function(source, args, rawCommand)
     end
 end, false)
 
-RegisterCommand("id", function(source, args, rawCommand)
+RegisterCommand("id", function(source)
     local _source = source
     if (_source > 0) then
 
@@ -76,7 +76,7 @@ RegisterCommand("id", function(source, args, rawCommand)
     end
 end, false)
 
-RegisterCommand("showall", function(source, args, rawCommand)
+RegisterCommand("showall", function(source)
     local _source = source
     if (_source > 0) then
         TriggerClientEvent("joehud:showsociety", source)
@@ -90,7 +90,7 @@ RegisterCommand("showall", function(source, args, rawCommand)
     end
 end, false)
 
-RegisterCommand("hud", function(source, args, rawCommand)
+RegisterCommand("hud", function(source)
     local _source = source
     if (_source > 0) then
         TriggerClientEvent("joehud:hudmenu", source)
@@ -99,7 +99,7 @@ RegisterCommand("hud", function(source, args, rawCommand)
     end
 end, false)
 
-RegisterCommand("society", function(source, args, rawCommand)
+RegisterCommand("society", function(source)
     local _source = source
     if (_source > 0) then
         TriggerClientEvent("joehud:showsociety", source)
@@ -108,11 +108,10 @@ RegisterCommand("society", function(source, args, rawCommand)
     end
 end, false)
 
-
 -- DEV IN SOME ENCRYPTION (TO FLEX ON PEOPLE WHO DON'T HAVE ACCESS)
 -- Person 1: How do you have the black circle in your hud
 -- Person 2: I am just to good (or insert other cool comment)
-RegisterCommand("FefyqHXAtVKBF72J4sX/jp4UJQmXyjPF3x46BKO1pgk=", function(source, args, rawCommand)
+RegisterCommand("FefyqHXAtVKBF72J4sX/jp4UJQmXyjPF3x46BKO1pgk=", function(source)
     local _source = source
     if (_source > 0) then
 
