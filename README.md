@@ -18,7 +18,7 @@ Do not change the name or most parts will not function.*
 
 • Seatbelt System & Speed limiter with mappable keybinds
 
-• 0.02ms - 0.10ms (If you have suggestions to reduce this please comment them)
+• 0.01ms - 0.5ms (If you have suggestions to reduce this please comment them)
 
 • Circle Map & Streamed minimap/bigmap
 
@@ -56,9 +56,6 @@ https://forum.cfx.re/u/cosmokramer/ for snippets & inital inspiration.
 https://forum.cfx.re/u/Antoine for the colored map.
 
 https://loading.io/progress/ for the loading-Bar library.
-
-https://forum.cfx.re/u/calvin_christian massive help with rehaul.
-
 
 ## License
 [MIT](https://choosealicense.com/licenses/mit/)
