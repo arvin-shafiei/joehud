@@ -16,8 +16,7 @@ local speedfps = 125;
 local minimap = RequestScaleformMovie("minimap")
 local speedBuffer, velBuffer  = {}, {}
 local Driving, Underwater, enableCruise, wasInCar, pedinVeh, beltOn = false, false, false, false, false, false
-local lastJob, lastcash, lastbank, lastdirty, lastsociety, society, hunger, thirst, player, vehicle
-local ind = {l = false, r = false}
+local lastjob, lastcash, lastbank, lastdirty, lastsociety, society, hunger, thirst, player, vehicle
 
 ESX = nil
 
@@ -50,10 +49,8 @@ end)
 RegisterKeyMapping('speedlimiter', 'SpeedLimiter', 'keyboard', 'CAPITAL')
 RegisterKeyMapping('seatbelt', 'Seatbelt', 'keyboard', 'B')   
 
-Citizen.CreateThread(function()
-	while true do
-
-		if pedinVeh and (wasInCar or IsCar(vehicle)) then
+seatbeltloop = function()
+    while true do
 			wasInCar = true
 			
 			if beltOn then 
@@ -63,7 +60,7 @@ Citizen.CreateThread(function()
 			speedBuffer[2] = speedBuffer[1]
 			speedBuffer[1] = GetEntitySpeed(vehicle)
 			
-			if speedBuffer[2] ~= nil and not beltOn and GetEntitySpeedVector(vehicle, true).y > 1.0  and speedBuffer[1] > 19.25 and (speedBuffer[2] - speedBuffer[1]) > (speedBuffer[1] * 0.255) then			   
+			if speedBuffer[2] ~= nil and not beltOn and GetEntitySpeedVector(vehicle, true).y > 1.0  and speedBuffer[1] > 2 and (speedBuffer[2] - speedBuffer[1]) > (speedBuffer[1] * 0.255) then			   
 				local co = GetEntityCoords(PlayerPedId())
 				local fw = Fwv(PlayerPedId())
 				SetEntityCoords(PlayerPedId(), co.x + fw.x, co.y + fw.y, co.z - 0.47, true, true, true)
@@ -75,16 +72,17 @@ Citizen.CreateThread(function()
 			velBuffer[2] = velBuffer[1]
 			velBuffer[1] = GetEntityVelocity(vehicle)
             
-		elseif wasInCar then
+            
+		if wasInCar then
             wasInCar = false
             beltOn = false
             speedBuffer[1], speedBuffer[2] = 0.0, 0.0
-		end
         Wait(10) 
 	end
-end)
+end
+end
 
-function seatbelt()
+seatbelt = function()
     if pedinVeh then
         beltOn = not beltOn				  
         if beltOn then
@@ -167,6 +165,7 @@ Citizen.CreateThread(function()
             end
             if Driving == false then
                 Driving = true
+                seatbeltloop()
                 isinvehicle()
                 TriggerVehicleLoop()
             end
@@ -272,7 +271,6 @@ AddEventHandler('joehud:setInfo', function(info)
             SendNUIMessage({society = comma_value(society)})
         end
 
-
     SendNUIMessage({
         action = "update_hud",
         hp = GetEntityHealth(PlayerPedId()) - 100,
@@ -301,22 +299,26 @@ comma_value = function(amount)
 end
 
 -- Speedometer and a few other things
+local maxspeed
+local vehhash
 isinvehicle = function()
     Citizen.CreateThread(function()
         while true do
             Wait(speedfps)
             local veh = GetVehiclePedIsUsing(PlayerPedId(), false)
             local speed = math.floor(GetEntitySpeed(veh) * Config.Speed)
-            local vehhash = GetEntityModel(veh)
-            local maxspeed = (GetVehicleModelMaxSpeed(vehhash) * Config.Speed) + 20
-    
+       
         if checkvehclass then
             local vehicleClass = GetVehicleClass(GetVehiclePedIsIn(PlayerPedId()))
             checkvehclass = false
             if vehicleClass == 8 or vehicleClass == 13 or vehicleClass == 14 or vehicleClass == 15 or vehicleClass == 16 then
                 SendNUIMessage({hideseatbeltextra = true})
+                vehhash = GetEntityModel(veh)
+                maxspeed = (GetVehicleModelMaxSpeed(vehhash) * Config.Speed) + 20
             else
                 SendNUIMessage({hideseatbeltextra = false})
+                vehhash = GetEntityModel(veh)
+                maxspeed = (GetVehicleModelMaxSpeed(vehhash) * Config.Speed) + 20
             end  
         end
         
@@ -380,7 +382,6 @@ Voicelevel = function(val)
 end
 exports('Voicelevel', Voicelevel)
 
-
 -- server sided commands
 
 RegisterNetEvent('joehud:devmode')
@@ -393,7 +394,7 @@ AddEventHandler('joehud:showjob', function()
     TriggerEvent('chat:addMessage', {
         color = { 150, 75, 0},
         multiline = true,
-        args = {"Job Center", "Your current job is " .. jobName}
+        args = {"Job Center", "Your current job is " .. lastjob}
       })
 end, false)   
 
