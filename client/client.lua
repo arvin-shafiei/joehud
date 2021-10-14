@@ -16,7 +16,7 @@ local speedfps = 125;
 local minimap = RequestScaleformMovie("minimap")
 local speedBuffer, velBuffer  = {}, {}
 local Driving, Underwater, enableCruise, wasInCar, pedinVeh, beltOn = false, false, false, false, false, false
-local lastjob, lastcash, lastbank, lastdirty, lastsociety, society, hunger, thirst, player, vehicle
+local lastjob, lastcash, lastbank, lastdirty, lastsociety, society, hunger, thirst, player, vehicle, vehicleIsOn
 
 ESX = nil
 
@@ -82,6 +82,10 @@ seatbeltloop = function()
 end
 end
 
+RegisterCommand('seatbelt', function()
+    seatbelt()
+end, false) 
+
 seatbelt = function()
     if pedinVeh then
         beltOn = not beltOn				  
@@ -92,10 +96,6 @@ seatbelt = function()
         end 
     end
 end
-
-RegisterCommand('seatbelt', function()
-    seatbelt()
-end, false) 
 
 IsCar = function(veh)
     local vc = GetVehicleClass(veh)
@@ -114,9 +114,8 @@ RegisterCommand('speedlimiter', function()
     local vehicleModel = GetEntityModel(vehicle)
     local speed = GetEntitySpeed(vehicle)
     local Max = GetVehicleModelMaxSpeed(vehicleModel)
-    local inVehicle = GetIsVehicleEngineRunning(GetVehiclePedIsIn(player)) == 1 
 
-    if (inVehicle) then
+    if vehicleIsOn then
         if (GetPedInVehicleSeat(vehicle, -1) == player) then	
             if enableCruise == false then 
                 SetVehicleMaxSpeed(vehicle, speed)
@@ -147,7 +146,7 @@ Citizen.CreateThread(function()
 
         pedinVeh = IsPedInAnyVehicle(PlayerPedId(), false)				
         vehicle = GetVehiclePedIsIn(PlayerPedId(), false)
-        local vehicleIsOn = GetIsVehicleEngineRunning(vehicle)
+        vehicleIsOn = GetIsVehicleEngineRunning(vehicle)
         local hideseatbelt, showlimiter, showSpeedo = false, false, false 
         local mapoutline = false
         player = PlayerPedId()
@@ -220,7 +219,8 @@ end)
 
 Citizen.CreateThread( function()
 	while true do 
-        SendNUIMessage({talking = NetworkIsPlayerTalking(PlayerId())})
+        local istalking = NetworkIsPlayerTalking(PlayerId())
+        SendNUIMessage({talking = istalking})
         Wait(500)
     end
 end)
@@ -282,6 +282,7 @@ AddEventHandler('joehud:setInfo', function(info)
     })
 end)
  
+-- adds commas to large numbers
 comma_value = function(amount)
     local formatted = amount
     

@@ -214,7 +214,6 @@ function droplistchange(x) {
 }).then(resp => resp.json()).then(resp => console.log(resp));
 
 }
-//
 
 var armourtogglemenu = document.getElementById("armouronoff");
 function armourtoggle() {
@@ -285,8 +284,6 @@ if (localStorage.getItem("armourrele") == null ) {
   localStorage.setItem('armourrele', 'true');
 }
 
-
-
 var staminatogglemenu = document.getElementById("staminaonoff");
 function staminatoggle() {
   if (staminatogglemenu.checked == true){
@@ -311,7 +308,6 @@ if (localStorage.getItem("staminaon") == null ) {
   staminatogglemenu.checked = true;
   localStorage.setItem('staminaon', 'true');
 }
-
 
 var hungertogglemenu = document.getElementById("hungeronoff");
 function hungertoggle() {
@@ -338,7 +334,6 @@ if (localStorage.getItem("hungeron") == null ) {
   localStorage.setItem('hungeron', 'true');
 }
 
-
 var thirsttogglemenu = document.getElementById("thirstonoff");
 function thristtoggle() {
   if (thirsttogglemenu.checked == true){
@@ -363,7 +358,6 @@ if (localStorage.getItem("thriston") == null ) {
   thirsttogglemenu.checked = true;
   localStorage.setItem('thriston', 'true');
 }
-
 
 var voicetogglemenu = document.getElementById("voiceonoff");
 function voicetoggle() {
@@ -390,7 +384,6 @@ if (localStorage.getItem("voiceon") == null ) {
   localStorage.setItem('voiceon', 'true');
 }
 
-
 var oxygenrelmenu = document.getElementById("oxygenrel");
 function oxygenrelevant() {
   if (oxygenrelmenu.checked == true){
@@ -415,7 +408,6 @@ if (localStorage.getItem("oxygenisrel") == null ) {
   oxygenrelmenu.checked = true;
   localStorage.setItem('oxygenisrel', 'true');
 }
-
 
 var fueltogglemenu = document.getElementById("fuelonoff");
 function fueltoggle() {
@@ -442,9 +434,6 @@ if (localStorage.getItem("fuelon") == null ) {
   localStorage.setItem('fuelon', 'true');
 }
 
-
-
-
 var speedtogglemenu = document.getElementById("speedonoff");
 function speedtoggle() {
   if (speedtogglemenu.checked == true){
@@ -469,8 +458,6 @@ if (localStorage.getItem("speedon") == null ) {
   speedtogglemenu.checked = true;
   localStorage.setItem('speedon', 'true');
 }
-
-
 
 var maptogglemenu = document.getElementById("maponoff");
 function maptoggle() {
@@ -750,7 +737,9 @@ window.addEventListener("message", function (event) {
   } else if (data.showhudmenu == false) {
     $(".hudmenu").hide();
   }
+
   if (data.action == "devmode") {
     $("#developericon").fadeToggle()
   }
+
 });

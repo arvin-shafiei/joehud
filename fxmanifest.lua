@@ -4,7 +4,7 @@ game 'gta5'
 name 'joehud'
 author 'joerogan#0001 / CosmoKramer'
 description 'HUD, Seatbelt & Speedlimiter System'
-version '1.08'
+version '1.10'
 
 ui_page 'html/ui.html'
 
