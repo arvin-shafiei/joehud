@@ -60,7 +60,7 @@ seatbeltloop = function()
 			speedBuffer[2] = speedBuffer[1]
 			speedBuffer[1] = GetEntitySpeed(vehicle)
 			
-			if speedBuffer[2] ~= nil and not beltOn and GetEntitySpeedVector(vehicle, true).y > 1.0  and speedBuffer[1] > 2 and (speedBuffer[2] - speedBuffer[1]) > (speedBuffer[1] * 0.255) then			   
+			if speedBuffer[2] ~= nil and not beltOn and GetEntitySpeedVector(vehicle, true).y > 1.0  and speedBuffer[1] > 15 and (speedBuffer[2] - speedBuffer[1]) > (speedBuffer[1] * 0.255) then			   
 				local co = GetEntityCoords(PlayerPedId())
 				local fw = Fwv(PlayerPedId())
 				SetEntityCoords(PlayerPedId(), co.x + fw.x, co.y + fw.y, co.z - 0.47, true, true, true)
