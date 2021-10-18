@@ -48,11 +48,10 @@ end)
 
 RegisterKeyMapping('speedlimiter', 'SpeedLimiter', 'keyboard', 'CAPITAL')
 RegisterKeyMapping('seatbelt', 'Seatbelt', 'keyboard', 'B')   
-
 Citizen.CreateThread(function()
 	while true do
-
-		if pedinVeh and (wasInCar or IsCar(vehicle)) then
+		local car = GetVehiclePedIsIn(player)
+		if car ~= 0 and (wasInCar or IsCar(car)) then
 			wasInCar = true
 			
 			if beltOn then 
@@ -60,9 +59,9 @@ Citizen.CreateThread(function()
             end
 			
 			speedBuffer[2] = speedBuffer[1]
-			speedBuffer[1] = GetEntitySpeed(vehicle)
+			speedBuffer[1] = GetEntitySpeed(car)
 			
-			if speedBuffer[2] ~= nil and not beltOn and GetEntitySpeedVector(vehicle, true).y > 1.0  and speedBuffer[1] > 15 and (speedBuffer[2] - speedBuffer[1]) > (speedBuffer[1] * 0.255) then			   
+			if speedBuffer[2] ~= nil and not beltOn and GetEntitySpeedVector(car, true).y > 1.0  and speedBuffer[1] > 15 and (speedBuffer[2] - speedBuffer[1]) > (speedBuffer[1] * 0.255) then			   
 				local co = GetEntityCoords(PlayerPedId())
 				local fw = Fwv(PlayerPedId())
 				SetEntityCoords(PlayerPedId(), co.x + fw.x, co.y + fw.y, co.z - 0.47, true, true, true)
@@ -72,14 +71,14 @@ Citizen.CreateThread(function()
 			end
 				
 			velBuffer[2] = velBuffer[1]
-			velBuffer[1] = GetEntityVelocity(vehicle)
+			velBuffer[1] = GetEntityVelocity(car)
             
             
 		elseif wasInCar then
             wasInCar = false
             beltOn = false
             speedBuffer[1], speedBuffer[2] = 0.0, 0.0
-	end
+        end
         Wait(10) 
 	end
 end)
