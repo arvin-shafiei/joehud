@@ -49,8 +49,10 @@ end)
 RegisterKeyMapping('speedlimiter', 'SpeedLimiter', 'keyboard', 'CAPITAL')
 RegisterKeyMapping('seatbelt', 'Seatbelt', 'keyboard', 'B')   
 
-seatbeltloop = function()
-    while true do
+Citizen.CreateThread(function()
+	while true do
+
+		if pedinVeh and (wasInCar or IsCar(vehicle)) then
 			wasInCar = true
 			
 			if beltOn then 
@@ -73,20 +75,20 @@ seatbeltloop = function()
 			velBuffer[1] = GetEntityVelocity(vehicle)
             
             
-		if wasInCar then
+		elseif wasInCar then
             wasInCar = false
             beltOn = false
             speedBuffer[1], speedBuffer[2] = 0.0, 0.0
+	end
         Wait(10) 
 	end
-end
-end
+end)
 
 RegisterCommand('seatbelt', function()
     seatbelt()
 end, false) 
 
-seatbelt = function()
+function seatbelt()
     if pedinVeh then
         beltOn = not beltOn				  
         if beltOn then
@@ -164,7 +166,6 @@ Citizen.CreateThread(function()
             end
             if Driving == false then
                 Driving = true
-                seatbeltloop()
                 isinvehicle()
                 TriggerVehicleLoop()
             end
@@ -300,26 +301,22 @@ comma_value = function(amount)
 end
 
 -- Speedometer and a few other things
-local maxspeed
-local vehhash
 isinvehicle = function()
     Citizen.CreateThread(function()
         while true do
             Wait(speedfps)
             local veh = GetVehiclePedIsUsing(PlayerPedId(), false)
             local speed = math.floor(GetEntitySpeed(veh) * Config.Speed)
+	    local vehhash = GetEntityModel(veh)
+            local maxspeed = (GetVehicleModelMaxSpeed(vehhash) * Config.Speed) + 25
        
         if checkvehclass then
             local vehicleClass = GetVehicleClass(GetVehiclePedIsIn(PlayerPedId()))
             checkvehclass = false
             if vehicleClass == 8 or vehicleClass == 13 or vehicleClass == 14 or vehicleClass == 15 or vehicleClass == 16 then
                 SendNUIMessage({hideseatbeltextra = true})
-                vehhash = GetEntityModel(veh)
-                maxspeed = (GetVehicleModelMaxSpeed(vehhash) * Config.Speed) + 20
             else
                 SendNUIMessage({hideseatbeltextra = false})
-                vehhash = GetEntityModel(veh)
-                maxspeed = (GetVehicleModelMaxSpeed(vehhash) * Config.Speed) + 20
             end  
         end
         
