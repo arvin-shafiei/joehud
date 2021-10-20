@@ -88,9 +88,9 @@ RegisterCommand('seatbelt', function()
 end, false) 
 
 function seatbelt()
-    if pedinVeh and vehicleIsOn then
+    if pedinVeh then
         beltOn = not beltOn				  
-        if beltOn then
+        if beltOn and vehicleIsOn then
             SendNUIMessage({seatbelton = true})
         else
             SendNUIMessage({seatbelton = false})
