@@ -88,7 +88,7 @@ RegisterCommand('seatbelt', function()
 end, false) 
 
 function seatbelt()
-    if pedinVeh then
+    if pedinVeh and vehicleIsOn then
         beltOn = not beltOn				  
         if beltOn then
             SendNUIMessage({seatbelton = true})
@@ -116,7 +116,7 @@ RegisterCommand('speedlimiter', function()
     local speed = GetEntitySpeed(vehicle)
     local Max = GetVehicleModelMaxSpeed(vehicleModel)
 
-    if vehicleIsOn then
+   if pedinVeh and vehicleIsOn then
         if (GetPedInVehicleSeat(vehicle, -1) == player) then	
             if enableCruise == false then 
                 SetVehicleMaxSpeed(vehicle, speed)
