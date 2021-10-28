@@ -321,7 +321,7 @@ isinvehicle = function()
         
         if Config.LegacyFuel then 
             local fuellevel = exports["LegacyFuel"]:GetFuel(veh)
-            SendNUIMessage({speed = speed, maxspeed = maxspeed, action = "update_fuel", fuel = fuellevel, showFuel = true})
+            SendNUIMessage({speed = speed, speedtext = speedtext, maxspeed = maxspeed, action = "update_fuel", fuel = fuellevel, showFuel = true})
         else
             local fuellevel = GetVehicleFuelLevel(veh)
             SendNUIMessage({speed = speed, speedtext = speedtext, maxspeed = maxspeed, action = "update_fuel", fuel = fuellevel, showFuel = true})
