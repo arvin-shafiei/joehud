@@ -1,0 +1,202 @@
+<html>
+  <head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w==" crossorigin="anonymous"/>
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@100;300&display=swap" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <link rel="stylesheet" href="style.css">
+  </head>
+
+<body>
+<div id="overfoil">
+<div id="mapfoil"> 
+  <div class="outline">
+    <center>
+      <div class="mapborder"></div>
+    </center>
+  </div>
+</div>
+</div>
+
+  <div class="hudmenu">
+    <h1 id="toptext">JoeHud by joe rogan#0001</h1>
+    <br>
+    <hr>
+    <h1 style="color: white; margin-bottom: 2.5px;">Status</h1>
+    <input type="checkbox" id="healthonoff" class="cm-toggle" onclick="healthtoggle()" checked>
+  
+    <label class="checkboxs">Health</label>
+    <br>
+    <input type="checkbox" id="armouronoff" class="cm-toggle" onclick="armourtoggle()" checked>
+  
+    <label class="checkboxs">Armour</label>
+    <br>
+    <input type="checkbox" id="staminaonoff" class="cm-toggle" onclick="staminatoggle()" checked>
+  
+    <label class="checkboxs">Stamina</label>
+    <br>
+    <input type="checkbox" id="hungeronoff" class="cm-toggle" onclick="hungertoggle()" checked>
+  
+    <label class="checkboxs">Hunger</label>
+    <br>
+    <input type="checkbox" id="thirstonoff" class="cm-toggle" onclick="thristtoggle()" checked>
+  
+    <label class="checkboxs">Thirst</label>
+    <br>
+    <input type="checkbox" id="voiceonoff" class="cm-toggle" onclick="voicetoggle()" checked>
+  
+    <label class="checkboxs">Voice</label>
+    <br>
+    <br>
+    <br>
+    <input type="checkbox" id="oxygenrel" class="cm-toggle" onclick="oxygenrelevant()" checked>
+    <label class="checkboxs"><span style="font-size: 17.5px;">Show Oxygen Only When Relevant</span></label>
+    <br>
+    <input type="checkbox" id="armourrel" class="cm-toggle" onclick="armourrelevant()" checked>
+    <label class="checkboxs"><span style="font-size: 17.5px;">Show Armour Only When Relevant</span></label>
+    <br>
+    <br>
+    <hr>
+    <h1 style="color: white; margin-bottom: 2.5px;">Vehicle</h1>
+
+    <input type="checkbox" id="speedonoff" class="cm-toggle" onclick="speedtoggle()" checked>
+  
+    <label class="checkboxs">Speedometer&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+    <label class="checkboxs"><span style="font-size: 20px;">Speedometer FPS&nbsp;&nbsp;</span><span style="font-size: 10.5px; color:#FFF;">(Increasing This can Vastly Improve Performance)</span></label>
+
+<div id="fpsdropmenu">
+    <form style="margin-left: 250px; margin-top: 10px; ">
+      <select name = "dropdown" onChange="droplistchange(this)">
+         <option value = 125>125</option>
+         <option value = 250>250</option>
+         <option value = 500>500</option>
+         <option value = 1000>1000</option>
+         <option value = 1500>1500</option>
+      </select>
+   </form>
+</div>
+    <br>
+
+    <input type="checkbox" id="fuelonoff" class="cm-toggle" onclick="fueltoggle()" checked>
+  
+    <label class="checkboxs">Fuel Gauge</label>
+
+    <br>
+
+    <input type="checkbox" id="maponoff" class="cm-toggle" onclick="maptoggle()" checked>
+  
+    <label class="checkboxs">Show Minimap</label>
+
+    <br>
+
+    <hr>
+    <h1 style="color: white; margin-bottom: 2.5px;">Extras <span style="font-size: 20px; font-weight: 900;">(EXPERIMENTAL)</span></h1>
+
+    <input type="checkbox" id="showbalanceandjob" class="cm-toggle" onclick="balancetoggle()">
+  
+    <label class="checkboxs">Show Balances & Job</label>
+  </div>
+
+<div class="container">
+  <div class="Icons">
+    
+      <div id="VoiceBar" class="BaseCircle">
+        <i id="Voice" class="fas fa-microphone"></i>
+      </div>
+  
+      <div id="HealthBar" class="BaseCircle">
+        <i id="Health" class="fas fa-heart"></i>
+      </div>
+
+    <div id="armourfoil">
+      <div id="ArmourBar" class="BaseCircle">
+        <i id="Armour" class="fas fa-shield-alt"></i>
+      </div>
+    </div>
+
+    <div id="staminafoil">
+      <div id="StaminaBar" class="BaseCircle">
+        <i id="Stamina" class="fas fa-running"></i>
+      </div>
+    </div>
+
+      <div id="HungerBar" class="BaseCircle">
+        <i id="Hunger" class="fas fa-hamburger"></i>
+      </div>
+
+      <div id="ThirstBar" class="BaseCircle">
+        <i id="Thrist" class="fas fa-tint"></i>
+      </div>
+
+  <div id="seatbeltfoilextra">    
+    <div id="seatbeltfoil">
+      <div id="seatbelt" class="BaseCircle">
+        <i id="ops" class="fas fa-user-slash"></i>
+      </div>  
+    </div>
+  </div>
+
+  <div id="extralimiterfoil">
+    <div id="SpeedLimiter" class="BaseCircle">
+      <i id="speedlimiter" class="fas fa-tachometer-alt"></i>
+    </div>  
+  </div>
+
+  <div id="developericon" class="BaseCircle">
+    <i id="dev" class="fas fa-terminal"></i>
+  </div>
+
+  <div id="oxygenfoil">
+    <div id="OxygenBar" class="BaseCircle">
+      <i id="Oxygen" class="fas fa-lungs"></i>
+    </div>  
+  </div>
+
+  <div id="gunout" class="BaseCircle">
+    <i id="weapbar" class="fas fa-align-justify"></i>
+  </div>
+
+</div>   
+
+<div id="balancefoil">
+
+  <div class="container">
+  
+  <div id="job">Loading...</div>
+
+  <div class="MoneyBox">
+
+
+  <div id="society" class="MoneyCircle">
+    <i id="SocietyBalance" class="fas  fa-briefcase"><span id="societytext" class="balancetext">Loading.</span></i>
+  </div>
+
+  <div id="money" class="MoneyCircle">
+    <i id="CashBalance" class="fas fa-wallet"><span id="cashtext" class="balancetext">Loading....</span></i>
+  </div>
+
+  <div id="bank" class="MoneyCircle">
+    <i id="BankBalance" class="fas fa-university"><span id="banktext" class="balancetext">Loading...</span></i>
+  </div>
+
+  <div id="blackmoney" class="MoneyCircle">
+    <i id="DirtyCash" class="fas fa-mask"><span id="dirtytext" class="balancetext">Loading....</span></i>
+  </div>
+</div>   
+</div>
+</div>
+
+<div id="VehicleBox" style="display: none;">  
+  <div id="speedfoil">
+    <div id="SpeedCircle" class="FuelCircle"><h6 id="SpeedIndicator"></h6></div>  
+  </div>
+<div id="fuelfoil">
+    <div id="FuelCircle" class="FuelCircle"><i id="FuelBar" class="fas fa-gas-pump"></i></div>
+</div>
+</div>
+ 
+</div> 
+</body>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/progressbar.js/0.9.0/progressbar.min.js"></script>
+<script type="text/javascript" src="script.js"></script>
+</html>                         
