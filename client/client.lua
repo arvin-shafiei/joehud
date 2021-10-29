@@ -229,8 +229,8 @@ end)
 RegisterNetEvent('joehud:setInfo')
 AddEventHandler('joehud:setInfo', function(info)
 
-    if ESX.PlayerData.job ~= nil then
-        if ESX.PlayerData.job.grade_name ~= nil and ESX.PlayerData.job.grade_name == 'boss' then
+    if ESX.PlayerData.job then
+        if ESX.PlayerData.job.grade_name and ESX.PlayerData.job.grade_name == 'boss' then
             ESX.TriggerServerCallback('esx_society:getSocietyMoney', function(money)
             society = money
             end, ESX.PlayerData.job.name)
