@@ -594,7 +594,7 @@ window.addEventListener("message", function (event) {
     $("#Voice").addClass("fa-microphone");
   }
 
-  if (data.talking == 1) {
+  if (data.talking == true) {
     VoiceBar.path.setAttribute("stroke", "#FFFF00");
   } else if (data.talking == false) {
     VoiceBar.path.setAttribute("stroke", "#FFFFFF");
