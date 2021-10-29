@@ -46,8 +46,6 @@ AddEventHandler('esx:setJob', function(job)
     ESX.PlayerData.job = job
 end)
 
-RegisterKeyMapping('speedlimiter', 'SpeedLimiter', 'keyboard', 'CAPITAL')
-RegisterKeyMapping('seatbelt', 'Seatbelt', 'keyboard', 'B')   
 Citizen.CreateThread(function()
 	while true do
 		local car = GetVehiclePedIsIn(player)
@@ -140,6 +138,9 @@ RegisterCommand('speedlimiter', function()
         end
     end
 end, false)
+
+RegisterKeyMapping('speedlimiter', 'SpeedLimiter', 'keyboard', 'CAPITAL')
+RegisterKeyMapping('seatbelt', 'Seatbelt', 'keyboard', 'B')   
 
 Citizen.CreateThread(function()
     while true do
@@ -241,10 +242,10 @@ AddEventHandler('joehud:setInfo', function(info)
     TriggerEvent('esx_status:getStatus', 'hunger', function(status) hunger = status.val / 10000 end)
     TriggerEvent('esx_status:getStatus', 'thirst', function(status) thirst = status.val / 10000 end)
 
-    if Config.rpRadio then
-        local radioStatus = exports["rp-radio"]:IsRadioOn()
-        SendNUIMessage({radio = radioStatus})
-    end
+        if Config.rpRadio then
+            local radioStatus = exports["rp-radio"]:IsRadioOn()
+            SendNUIMessage({radio = radioStatus})
+        end
 
         if(lastjob ~= info['job']) then
             lastjob = info['job']
@@ -300,37 +301,40 @@ comma_value = function(amount)
 end
 
 -- Speedometer and a few other things
+local speedomulti = 2.236936
+
 isinvehicle = function()
     Citizen.CreateThread(function()
         while true do
+
             Wait(speedfps)
             local veh = GetVehiclePedIsUsing(PlayerPedId(), false)
-            local speed = math.floor(GetEntitySpeed(veh) * Config.Speed)
-	    local vehhash = GetEntityModel(veh)
-            local maxspeed = (GetVehicleModelMaxSpeed(vehhash) * Config.Speed) + 25
+            local speed = math.floor(GetEntitySpeed(veh) * speedomulti)
+	        local vehhash = GetEntityModel(veh)
+            local maxspeed = (GetVehicleModelMaxSpeed(vehhash) * speedomulti) + 25
        
-        if checkvehclass then
-            local vehicleClass = GetVehicleClass(GetVehiclePedIsIn(PlayerPedId()))
-            checkvehclass = false
-            if vehicleClass == 8 or vehicleClass == 13 or vehicleClass == 14 or vehicleClass == 15 or vehicleClass == 16 then
-                SendNUIMessage({hideseatbeltextra = true})
-            else
-                SendNUIMessage({hideseatbeltextra = false})
-            end  
-        end
+            if checkvehclass then
+                local vehicleClass = GetVehicleClass(GetVehiclePedIsIn(PlayerPedId()))
+                checkvehclass = false
+                if vehicleClass == 8 or vehicleClass == 13 or vehicleClass == 14 or vehicleClass == 15 or vehicleClass == 16 then
+                    SendNUIMessage({hideseatbeltextra = true})
+                else
+                 SendNUIMessage({hideseatbeltextra = false})
+                end  
+            end
         
-        if Config.LegacyFuel then 
-            local fuellevel = exports["LegacyFuel"]:GetFuel(veh)
-            SendNUIMessage({speed = speed, maxspeed = maxspeed, action = "update_fuel", fuel = fuellevel, showFuel = true})
-        else
-            local fuellevel = GetVehicleFuelLevel(veh)
-            SendNUIMessage({speed = speed, speedtext = speedtext, maxspeed = maxspeed, action = "update_fuel", fuel = fuellevel, showFuel = true})
-        end
+            if Config.LegacyFuel then 
+                local fuellevel = exports["LegacyFuel"]:GetFuel(veh)
+                SendNUIMessage({speed = speed, speedtext = speedtext, maxspeed = maxspeed, action = "update_fuel", fuel = fuellevel, showFuel = true})
+            else
+                local fuellevel = GetVehicleFuelLevel(veh)
+                SendNUIMessage({speed = speed, speedtext = speedtext, maxspeed = maxspeed, action = "update_fuel", fuel = fuellevel, showFuel = true})
+            end
 
-        if Driving == false then
-            checkvehclass = true
-            break
-        end
+            if Driving == false then
+                checkvehclass = true
+                break
+            end
 
         end
     end)
@@ -475,9 +479,10 @@ RegisterCommand('uir', function()
     ClearPedTasks(PlayerPedId())
 end, false)  
 
-if Config.Speed == 3.6 then
-    speedtext = "KMH"
-else
-    speedtext = "MPH"
+if Config.Speed == "mph" then
+        speedtext = "MPH"
+        speedomulti = 2.236936
+    else
+        speedtext = "KMH"
+        speedomulti = 3.6
 end
-
