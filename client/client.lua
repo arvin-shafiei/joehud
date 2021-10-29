@@ -215,6 +215,7 @@ Citizen.CreateThread(function()
         })
 
         TriggerServerEvent('joehud:getServerInfo')
+	TriggerEvent('joehud:setInfo')
     end
 end)
 
