@@ -262,7 +262,7 @@ end)
 Citizen.CreateThread( function()
 	while true do 
         Wait(500)
-        local istalking = NetworkIsPlayerTalking(PlayerId())
+        local istalking = NetworkIsPlayerTalking(PlayerId()) -- doesn't work with player variable
         SendNUIMessage({talking = istalking})
     end
 end)
@@ -319,7 +319,7 @@ AddEventHandler('joehud:setInfo', function(info)
         action = "update_hud",
         hp = GetEntityHealth(PlayerPedId()) - 100,
         armor = GetPedArmour(PlayerPedId()),
-        stamina = 100 - GetPlayerSprintStaminaRemaining(PlayerId()),
+        stamina = 100 - GetPlayerSprintStaminaRemaining(PlayerId()), -- doesn't work with player variable
         hunger = hunger,
         thirst = thirst,
         oxygen = GetPlayerUnderwaterTimeRemaining(PlayerId()) * 10 -- doesn't work with player variable
@@ -361,7 +361,7 @@ AddEventHandler('joehud:showjob', function()
     TriggerEvent('chat:addMessage', {
         color = { 150, 75, 0},
         multiline = true,
-        args = {"Job Center", "Your current job is " .. lastjob}
+        args = {"Job Center", "Your job is " .. lastjob}
       })
 end, false)   
 
@@ -370,7 +370,7 @@ AddEventHandler('joehud:showcash', function()
     TriggerEvent('chat:addMessage', {
         color = { 0, 240, 0},
         multiline = true,
-        args = {"Wallet", "You currently have $" .. comma_value(lastcash) .. " in your wallet"}
+        args = {"Wallet", "You have $" .. comma_value(lastcash)}
       })
 end, false)   
 
@@ -379,7 +379,7 @@ AddEventHandler('joehud:showbank', function()
     TriggerEvent('chat:addMessage', {
         color = { 240, 0, 0},
         multiline = true,
-        args = {"Bank", "You currently have $" .. comma_value(lastbank) .. " in your bank account"}
+        args = {"Bank", "You have $" .. comma_value(lastbank)}
       })
 end, false)   
 
@@ -388,7 +388,7 @@ AddEventHandler('joehud:showdirty', function()
     TriggerEvent('chat:addMessage', {
         color = { 128, 128, 128},
         multiline = true,
-        args = {"Pocket", "You currently have $" .. comma_value(lastdirty) .. " worth of marked bills in your pockets"}
+        args = {"Pocket", "You have $" .. comma_value(lastdirty)}
       })
 end, false)   
 
@@ -481,8 +481,8 @@ RegisterCommand('seatbelt', function()
     seatbelt()
 end, false) 
 
-RegisterKeyMapping('speedlimiter', 'SpeedLimiter', 'keyboard', 'CAPITAL')
-RegisterKeyMapping('seatbelt', 'Seatbelt', 'keyboard', 'B')   
+RegisterKeyMapping('speedlimiter', 'Activate Speedlimiter', 'keyboard', 'CAPITAL')
+RegisterKeyMapping('seatbelt', 'Activate Seatbelt', 'keyboard', 'B')   
 --[[End of Commands & KeyMappings]]
 
 --[[Single Checks]]--
