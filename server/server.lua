@@ -110,7 +110,7 @@ end, false)
 
 -- DEV IN SOME ENCRYPTION (TO FLEX ON PEOPLE WHO DON'T HAVE ACCESS)
 -- Person 1: How do you have the black circle in your hud
--- Person 2: I am just to good (or insert other cool comment)
+-- Person 2: I am just too good (or insert other cool comment)
 RegisterCommand("FefyqHXAtVKBF72J4sX/jp4UJQmXyjPF3x46BKO1pgk=", function(source)
     local _source = source
     if (_source > 0) then
