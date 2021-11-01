@@ -453,10 +453,10 @@ RegisterCommand('speedlimiter', function()
     local Max = GetVehicleModelMaxSpeed(vehicleModel)
     local vehicleClass = GetVehicleClass(GetVehiclePedIsIn(PlayerPedId()))
 
-    if vehicleClass == 13 then
-    else
    if pedinVeh and vehicleIsOn then
-        if (GetPedInVehicleSeat(vehicle, -1) == player) then	
+        if (GetPedInVehicleSeat(vehicle, -1) == player) then
+		if vehicleClass == 13 then
+    	else
             if enableCruise == false then 
                 SetVehicleMaxSpeed(vehicle, speed)
                 enableCruise = true
@@ -476,9 +476,9 @@ RegisterCommand('speedlimiter', function()
                     speedlimiter = false
                 })
             end 
+	    end
         end
     end
-end
 end, false)
 
 RegisterCommand('seatbelt', function()
