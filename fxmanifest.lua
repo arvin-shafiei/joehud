@@ -14,17 +14,11 @@ files {
     'html/style.css',
 }
 
-client_scripts {
-    'client/client.lua'
-}
+client_script 'client/client.lua'
 
-server_scripts {
-    'server/server.lua'
-}
+server_script 'server/server.lua'
 
-shared_script {
-    'config.lua'
-}
+shared_script 'config.lua'
 
 dependencies {
     'es_extended',
