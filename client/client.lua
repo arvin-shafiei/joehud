@@ -451,7 +451,10 @@ RegisterCommand('speedlimiter', function()
     local vehicleModel = GetEntityModel(vehicle)
     local speed = GetEntitySpeed(vehicle)
     local Max = GetVehicleModelMaxSpeed(vehicleModel)
+    local vehicleClass = GetVehicleClass(GetVehiclePedIsIn(PlayerPedId()))
 
+    if vehicleClass == 13 then
+    else
    if pedinVeh and vehicleIsOn then
         if (GetPedInVehicleSeat(vehicle, -1) == player) then	
             if enableCruise == false then 
@@ -475,10 +478,16 @@ RegisterCommand('speedlimiter', function()
             end 
         end
     end
+end
 end, false)
 
 RegisterCommand('seatbelt', function()
-    seatbelt()
+    local vehicleClass = GetVehicleClass(GetVehiclePedIsIn(PlayerPedId()))
+
+    if vehicleClass == 8 or vehicleClass == 13 or vehicleClass == 14 or vehicleClass == 21 then
+    else
+        seatbelt()
+    end
 end, false) 
 
 RegisterKeyMapping('speedlimiter', 'Activate Speedlimiter', 'keyboard', 'CAPITAL')
