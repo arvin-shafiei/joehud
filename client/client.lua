@@ -97,17 +97,6 @@ isinvehicle = function()
     end)
 end
 
-seatbelt = function()
-    if pedinVeh then
-        beltOn = not beltOn				  
-        if beltOn then
-            SendNUIMessage({seatbelton = true})
-        else
-            SendNUIMessage({seatbelton = false})
-        end 
-    end
-end
-
 comma_value = function(amount)
     local formatted = amount
     
@@ -272,14 +261,12 @@ end)
 RegisterNetEvent('joehud:setInfo')
 AddEventHandler('joehud:setInfo', function(info)
 
-        if ESX.PlayerData.job then
-         if ESX.PlayerData.job.grade_name and ESX.PlayerData.job.grade_name == 'boss' then
-             ESX.TriggerServerCallback('esx_society:getSocietyMoney', function(money)
+        if ESX.PlayerData.job and ESX.PlayerData.job.grade_name and ESX.PlayerData.job.grade_name == 'boss' then
+            ESX.TriggerServerCallback('esx_society:getSocietyMoney', function(money)
                 society = money
                 end, ESX.PlayerData.job.name)
-            else
-                society =  0
-            end
+        else
+            society =  0
         end
 
         TriggerEvent('esx_status:getStatus', 'hunger', function(status) hunger = status.val / 10000 end)
@@ -437,26 +424,29 @@ end)
 --[[Commands & KeyMappings]]--
 RegisterCommand('uir', function()
     ESX.UI.Menu.CloseAll()
-    SetNuiFocus(false, false)
+    TriggerEvent('wk:toggleMenuControlLock', false)
     SendNUIMessage({showhudmenu = false})
     SendNUIMessage({type = 'destroy'})
     SendNUIMessage({toggleradarrc = true})
-    TriggerEvent('wk:toggleMenuControlLock', false)
+    SendNUIMessage({action = 'closeMenu', namespace = namespace, name = name, data = data})
+    SendNUIMessage({type = 'closeAll'})
+    TriggerEvent("mdt:closeModal")
     showMenu = false
-    ClearPedTasks(PlayerPedId())
+    SetNuiFocus(false, false)
+    ClearPedTasksImmediately(PlayerPedId())
 end, false)  
 
 RegisterCommand('speedlimiter', function()
+   if pedinVeh and vehicleIsOn then
     local vehicle = GetVehiclePedIsIn(player, false)
     local vehicleModel = GetEntityModel(vehicle)
     local speed = GetEntitySpeed(vehicle)
     local Max = GetVehicleModelMaxSpeed(vehicleModel)
     local vehicleClass = GetVehicleClass(GetVehiclePedIsIn(PlayerPedId()))
 
-    if vehicleClass == 13 then
-    else
-   if pedinVeh and vehicleIsOn then
-        if (GetPedInVehicleSeat(vehicle, -1) == player) then	
+        if (GetPedInVehicleSeat(vehicle, -1) == player) then
+		if vehicleClass == 13 then
+    	else
             if enableCruise == false then 
                 SetVehicleMaxSpeed(vehicle, speed)
                 enableCruise = true
@@ -476,9 +466,9 @@ RegisterCommand('speedlimiter', function()
                     speedlimiter = false
                 })
             end 
+	    end
         end
     end
-end
 end, false)
 
 RegisterCommand('seatbelt', function()
@@ -486,9 +476,18 @@ RegisterCommand('seatbelt', function()
 
     if vehicleClass == 8 or vehicleClass == 13 or vehicleClass == 14 or vehicleClass == 21 then
     else
-        seatbelt()
+        if pedinVeh then
+            beltOn = not beltOn				  
+            if beltOn then
+                TriggerServerEvent('InteractSound_SV:PlayWithinDistance', 3.0, 'buckle', 0.6)
+                SendNUIMessage({seatbelton = true})
+            else
+                TriggerServerEvent('InteractSound_SV:PlayWithinDistance', 3.0, 'unbuckle', 0.6)
+                SendNUIMessage({seatbelton = false})
+            end 
+        end
     end
-end, false) 
+end, false)
 
 RegisterKeyMapping('speedlimiter', 'Activate Speedlimiter', 'keyboard', 'CAPITAL')
 RegisterKeyMapping('seatbelt', 'Activate Seatbelt', 'keyboard', 'B')   
