@@ -479,10 +479,8 @@ RegisterCommand('seatbelt', function()
         if pedinVeh then
             beltOn = not beltOn				  
             if beltOn then
-                TriggerServerEvent('InteractSound_SV:PlayWithinDistance', 3.0, 'buckle', 0.6)
                 SendNUIMessage({seatbelton = true})
             else
-                TriggerServerEvent('InteractSound_SV:PlayWithinDistance', 3.0, 'unbuckle', 0.6)
                 SendNUIMessage({seatbelton = false})
             end 
         end
