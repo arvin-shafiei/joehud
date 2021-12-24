@@ -64,7 +64,7 @@ isinvehicle = function()
     Citizen.CreateThread(function()
         while true do
 
-            Wait(speedfps)
+            Wait(125)
             local veh = GetVehiclePedIsUsing(PlayerPedId(), false)
             local speed = math.floor(GetEntitySpeed(veh) * speedomulti)
 	        local vehhash = GetEntityModel(veh)
