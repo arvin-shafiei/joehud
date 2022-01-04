@@ -31,6 +31,14 @@ body {
   overflow-x: hidden;
 }
 
+.hudmenu ul {
+    list-style-type: none;
+    margin: 0 auto;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+}
+
 .hudmenu::-webkit-scrollbar-track {
     background: rgba(0, 0, 0, 0);
     border: none;
