@@ -53,7 +53,7 @@ isinvehicle = function()
         while true do
             Wait(125)
 				
-            local veh = GetVehiclePedIsUsing(PlayerPedId(), false)
+            local veh = GetVehiclePedIsUsing(player, false)
             local speed = math.floor(GetEntitySpeed(veh) * speedomulti)
 	    local vehhash = GetEntityModel(veh)
             local maxspeed = (GetVehicleModelMaxSpeed(vehhash) * speedomulti) + 50
@@ -76,7 +76,7 @@ isinvehicle = function()
                 SendNUIMessage({speed = speed, speedtext = speedtext, maxspeed = maxspeed, action = "update_fuel", fuel = fuellevel, showFuel = true})
             end
 
-            if Driving == false then
+            if not Driving then
                 checkvehclass = true
                 break
             end
@@ -89,7 +89,7 @@ comma_value = function(amount)
     local formatted = amount
     
     while true do
-        if formatted == nil then 
+        if not formatted then 
             break
         else
       formatted, k = string.gsub(formatted, "^(-?%d+)(%d%d%d)", '%1,%2')
@@ -129,7 +129,6 @@ Citizen.CreateThread(function()
         Wait(1500)
 
         player = PlayerPedId()
-
         pedinVeh = IsPedInAnyVehicle(player, false)				
         vehicle = GetVehiclePedIsIn(player, false)
         vehicleIsOn = GetIsVehicleEngineRunning(vehicle)
@@ -215,9 +214,9 @@ Citizen.CreateThread(function()
 			speedBuffer[1] = GetEntitySpeed(car)
 			
 			if speedBuffer[2] and not beltOn and GetEntitySpeedVector(car, true).y > 1.0  and speedBuffer[1] > 15 and (speedBuffer[2] - speedBuffer[1]) > (speedBuffer[1] * 0.255) then			   
-				local co = GetEntityCoords(PlayerPedId())
-				local fw = Fwv(PlayerPedId())
-				SetEntityCoords(PlayerPedId(), co.x + fw.x, co.y + fw.y, co.z - 0.47, true, true, true)
+				local co = GetEntityCoords(player)
+				local fw = Fwv(player)
+				SetEntityCoords(player, co.x + fw.x, co.y + fw.y, co.z - 0.47, true, true, true)
 				SetEntityVelocity(PlayerPedId(), velBuffer[2].x, velBuffer[2].y, velBuffer[2].z)
 				Citizen.Wait(500)
 				SetPedToRagdoll(player, 1000, 1000, 0, 0, 0, 0)
@@ -253,7 +252,7 @@ AddEventHandler('joehud:setInfo', function(info)
         if ESX.PlayerData.job and ESX.PlayerData.job.grade_name and ESX.PlayerData.job.grade_name == 'boss' then
             ESX.TriggerServerCallback('esx_society:getSocietyMoney', function(money)
                 society = money
-                end, ESX.PlayerData.job.name)
+            end, ESX.PlayerData.job.name)
         else
             society =  0
         end
@@ -309,12 +308,13 @@ local y = -0.015
 
 Citizen.CreateThread(function()
 
-	RequestStreamedTextureDict("circlemap", false)
-	while not HasStreamedTextureDictLoaded("circlemap") do
-		Wait(100)
-	end
+    RequestStreamedTextureDict("circlemap", false)
+		
+    while not HasStreamedTextureDictLoaded("circlemap") do
+	Wait(100)
+    end
 
-	AddReplaceTexture("platform:/textures/graphics", "radarmasksm", "circlemap", "radarmasksm")
+    AddReplaceTexture("platform:/textures/graphics", "radarmasksm", "circlemap", "radarmasksm")
 
     SetMinimapClipType(1)
     SetMinimapComponentPosition('minimap', 'L', 'B', -0.022, -0.026, 0.16, 0.245)
@@ -431,7 +431,7 @@ RegisterCommand('speedlimiter', function()
     local vehicleModel = GetEntityModel(vehicle)
     local speed = GetEntitySpeed(vehicle)
     local Max = GetVehicleModelMaxSpeed(vehicleModel)
-    local vehicleClass = GetVehicleClass(GetVehiclePedIsIn(PlayerPedId()))
+    local vehicleClass = GetVehicleClass(GetVehiclePedIsIn(player))
 
         if (GetPedInVehicleSeat(vehicle, -1) == player) then
 		if vehicleClass == 13 then
@@ -461,7 +461,7 @@ RegisterCommand('speedlimiter', function()
 end, false)
 
 RegisterCommand('seatbelt', function()
-    local vehicleClass = GetVehicleClass(GetVehiclePedIsIn(PlayerPedId()))
+    local vehicleClass = GetVehicleClass(GetVehiclePedIsIn(player))
 
     if vehicleClass == 8 or vehicleClass == 13 or vehicleClass == 14 or vehicleClass == 21 then
 	print("You can't enable your seatbelt in this type of vehicle")
