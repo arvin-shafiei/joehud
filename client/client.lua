@@ -1,15 +1,3 @@
-local Keys = {
-	["ESC"] = 322, ["F1"] = 288, ["F2"] = 289, ["F3"] = 170, ["F5"] = 166, ["F6"] = 167, ["F7"] = 168, ["F8"] = 169, ["F9"] = 56, ["F10"] = 57, 
-	["~"] = 243, ["1"] = 157, ["2"] = 158, ["3"] = 160, ["4"] = 164, ["5"] = 165, ["6"] = 159, ["7"] = 161, ["8"] = 162, ["9"] = 163, ["-"] = 84, ["="] = 83, ["BACKSPACE"] = 177, 
-	["TAB"] = 37, ["Q"] = 44, ["W"] = 32, ["E"] = 38, ["R"] = 45, ["T"] = 245, ["Y"] = 246, ["U"] = 303, ["P"] = 199, ["["] = 39, ["]"] = 40, ["ENTER"] = 18,
-	["CAPS"] = 137, ["A"] = 34, ["S"] = 8, ["D"] = 9, ["F"] = 23, ["G"] = 47, ["H"] = 74, ["K"] = 311, ["L"] = 182,
-	["LEFTSHIFT"] = 21, ["Z"] = 20, ["X"] = 73, ["C"] = 26, ["V"] = 0, ["B"] = 29, ["N"] = 249, ["M"] = 244, [","] = 82, ["."] = 81,
-	["LEFTCTRL"] = 36, ["LEFTALT"] = 19, ["SPACE"] = 22, ["RIGHTCTRL"] = 70, 
-	["HOME"] = 213, ["PAGEUP"] = 10, ["PAGEDOWN"] = 11, ["DELETE"] = 178,
-	["LEFT"] = 174, ["RIGHT"] = 175, ["TOP"] = 27, ["DOWN"] = 173,
-	["NENTER"] = 201, ["N4"] = 108, ["N5"] = 60, ["N6"] = 107, ["N+"] = 96, ["N-"] = 97, ["N7"] = 117, ["N8"] = 61, ["N9"] = 118
-}
-
 local speedomulti = 2.236936
 local speedtext = "MPH"
 local mapon, checkvehclass = true, true
@@ -22,15 +10,15 @@ local lastjob, lastcash, lastbank, lastdirty, lastsociety, society, hunger, thir
 ESX = nil
 
 Citizen.CreateThread(function()
-    while ESX == nil do
+    while not ESX do
         TriggerEvent('esx:getSharedObject', function(obj)
             ESX = obj
         end)
-        Citizen.Wait(0)
+        Wait(0)
     end
 
-    while ESX.GetPlayerData().job == nil do
-		Citizen.Wait(10)
+    while not ESX.GetPlayerData().job do
+	Wait(10)
     end
 
     ESX.PlayerData = ESX.GetPlayerData()
@@ -63,12 +51,12 @@ end
 isinvehicle = function()
     Citizen.CreateThread(function()
         while true do
-
             Wait(125)
+				
             local veh = GetVehiclePedIsUsing(PlayerPedId(), false)
             local speed = math.floor(GetEntitySpeed(veh) * speedomulti)
-	        local vehhash = GetEntityModel(veh)
-            local maxspeed = (GetVehicleModelMaxSpeed(vehhash) * speedomulti) + 25
+	    local vehhash = GetEntityModel(veh)
+            local maxspeed = (GetVehicleModelMaxSpeed(vehhash) * speedomulti) + 50
        
             if checkvehclass then
                 local vehicleClass = GetVehicleClass(GetVehiclePedIsIn(PlayerPedId()))
@@ -159,7 +147,7 @@ Citizen.CreateThread(function()
             else
                 ToggleRadar(false)
             end
-            if Driving == false then
+            if not Driving then
                 Driving = true
                 isinvehicle()
                 TriggerVehicleLoop()
@@ -197,7 +185,7 @@ Citizen.CreateThread(function()
             showUi = true
         end
         
-        if IsPedArmed(player, 4 | 2) == 1 then
+        if IsPedArmed(player, 4 | 2) then
             showweap = true
         else
             showweap = false
@@ -219,14 +207,14 @@ Citizen.CreateThread(function()
 		if car ~= 0 and (wasInCar or IsCar(car)) then
 			wasInCar = true
 			
-			if beltOn then 
-                DisableControlAction(0, 75)
-            end
+	    		if beltOn then 
+                		DisableControlAction(0, 75)
+            		end
 			
 			speedBuffer[2] = speedBuffer[1]
 			speedBuffer[1] = GetEntitySpeed(car)
 			
-			if speedBuffer[2] ~= nil and not beltOn and GetEntitySpeedVector(car, true).y > 1.0  and speedBuffer[1] > 15 and (speedBuffer[2] - speedBuffer[1]) > (speedBuffer[1] * 0.255) then			   
+			if speedBuffer[2] and not beltOn and GetEntitySpeedVector(car, true).y > 1.0  and speedBuffer[1] > 15 and (speedBuffer[2] - speedBuffer[1]) > (speedBuffer[1] * 0.255) then			   
 				local co = GetEntityCoords(PlayerPedId())
 				local fw = Fwv(PlayerPedId())
 				SetEntityCoords(PlayerPedId(), co.x + fw.x, co.y + fw.y, co.z - 0.47, true, true, true)
@@ -240,10 +228,10 @@ Citizen.CreateThread(function()
             
             
 		elseif wasInCar then
-            wasInCar = false
-            beltOn = false
-            speedBuffer[1], speedBuffer[2] = 0.0, 0.0
-        end
+            		wasInCar = false
+            		beltOn = false
+           		speedBuffer[1], speedBuffer[2] = 0.0, 0.0
+        	end
         Wait(20) 
 	end
 end)
@@ -251,6 +239,7 @@ end)
 Citizen.CreateThread( function()
 	while true do 
         Wait(500)
+			
         local istalking = NetworkIsPlayerTalking(PlayerId()) -- doesn't work with player variable
         SendNUIMessage({talking = istalking})
     end
@@ -416,7 +405,7 @@ RegisterNUICallback('getmap', function(data, cb)
 end)
 
 RegisterNUICallback('getspeedfps', function(data, cb)
-    speedfps = data.speedfps
+    speedfps = data.speedfps or 125
     cb(speedfps)
 end)
 --[[End of Callbacks]]--
@@ -447,13 +436,13 @@ RegisterCommand('speedlimiter', function()
         if (GetPedInVehicleSeat(vehicle, -1) == player) then
 		if vehicleClass == 13 then
     	else
-            if enableCruise == false then 
+            if not enableCruise then 
                 SetVehicleMaxSpeed(vehicle, speed)
                 enableCruise = true
                 SendNUIMessage({
                     speedlimiter = true
                 })
-            elseif enableCruise == true then
+            elseif enableCruise then
                 SetVehicleMaxSpeed(vehicle, GetVehicleHandlingFloat(vehicle,"CHandlingData","fInitialDriveMaxFlatVel"))
                 enableCruise = false
                 SendNUIMessage({
@@ -475,6 +464,7 @@ RegisterCommand('seatbelt', function()
     local vehicleClass = GetVehicleClass(GetVehiclePedIsIn(PlayerPedId()))
 
     if vehicleClass == 8 or vehicleClass == 13 or vehicleClass == 14 or vehicleClass == 21 then
+	print("You can't enable your seatbelt in this type of vehicle")
     else
         if pedinVeh then
             beltOn = not beltOn				  
