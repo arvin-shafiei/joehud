@@ -9,7 +9,7 @@ local lastjob, lastcash, lastbank, lastdirty, lastsociety, society, hunger, thir
 
 ESX = nil
 
-Citizen.CreateThread(function()
+CreateThread(function()
     while not ESX do
         TriggerEvent('esx:getSharedObject', function(obj)
             ESX = obj
@@ -36,26 +36,26 @@ AddEventHandler('esx:setJob', function(job)
 end)
 
 --[[Functions]]--
-IsCar = function(veh)
+function IsCar(veh)
     local vc = GetVehicleClass(veh)
     return (vc >= 0 and vc <= 7) or (vc >= 9 and vc <= 12) or (vc >= 17 and vc <= 20)
 end	
 
-Fwv = function (entity)
+function Fwv(entity)  
     local hr = GetEntityHeading(entity) + 90.0
     if hr < 0.0 then hr = 360.0 + hr end
     hr = hr * 0.0174533
     return { x = math.cos(hr) * 2.0, y = math.sin(hr) * 2.0 }
 end
 
-isinvehicle = function()
-    Citizen.CreateThread(function()
+function isinvehicle()
+    CreateThread(function()
         while true do
             Wait(125)
-				
+
             local veh = GetVehiclePedIsUsing(player, false)
             local speed = math.floor(GetEntitySpeed(veh) * speedomulti)
-	    local vehhash = GetEntityModel(veh)
+	        local vehhash = GetEntityModel(veh)
             local maxspeed = (GetVehicleModelMaxSpeed(vehhash) * speedomulti) + 50
        
             if checkvehclass then
@@ -80,12 +80,11 @@ isinvehicle = function()
                 checkvehclass = true
                 break
             end
-
         end
     end)
 end
 
-comma_value = function(amount)
+function comma_value(amount)
     local formatted = amount
     
     while true do
@@ -101,30 +100,31 @@ comma_value = function(amount)
     return formatted
 end
 
-TriggerVehicleLoop = function()
+function TriggerVehicleLoop()
     if mapon then
-	Citizen.CreateThread(function()
-	    ToggleRadar(true)
+	    CreateThread(function()
+	        ToggleRadar(true)
             SetRadarBigmapEnabled(false, false)
-	end)
+	    end)
     end
 end
 
-ToggleRadar = function(state)
+function ToggleRadar(state)
 	DisplayRadar(state)
 	BeginScaleformMovieMethod(minimap, "SETUP_HEALTH_ARMOUR")
 	ScaleformMovieMethodAddParamInt(3)
 	EndScaleformMovieMethod()
 end
 
-Voicelevel = function(val)
+function Voicelevel(val)
     SendNUIMessage({action = "voice_level", voicelevel = val})
 end
+
 exports('Voicelevel', Voicelevel)
 --[[End of Functions]]--
 
 --[[Threads]]--
-Citizen.CreateThread(function()
+CreateThread(function()
     while true do
         Wait(1500)
 
@@ -200,7 +200,7 @@ Citizen.CreateThread(function()
     end
 end)
 
-Citizen.CreateThread(function()
+CreateThread(function()
 	while true do
 		local car = GetVehiclePedIsIn(player)
 		if car ~= 0 and (wasInCar or IsCar(car)) then
@@ -233,7 +233,7 @@ Citizen.CreateThread(function()
 	end
 end)
 
-Citizen.CreateThread( function()
+CreateThread(function()
 	while true do 
         Wait(500)
 			
@@ -303,7 +303,7 @@ end)
 local x = -0.025
 local y = -0.015
 
-Citizen.CreateThread(function()
+CreateThread(function()
 
     RequestStreamedTextureDict("circlemap", false)
 		
