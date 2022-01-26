@@ -1,7 +1,7 @@
 local speedomulti = 2.236936
 local speedtext = "MPH"
 local mapon, checkvehclass = true, true
-local speedfps = 125;
+local speedfps = 125
 local minimap = RequestScaleformMovie("minimap")
 local speedBuffer, velBuffer  = {}, {}
 local Driving, Underwater, enableCruise, wasInCar, pedinVeh, beltOn = false, false, false, false, false, false
@@ -103,10 +103,10 @@ end
 
 TriggerVehicleLoop = function()
     if mapon then
-	    Citizen.CreateThread(function()
-		    ToggleRadar(true)
+	Citizen.CreateThread(function()
+	    ToggleRadar(true)
             SetRadarBigmapEnabled(false, false)
-	    end)
+	end)
     end
 end
 
@@ -218,14 +218,12 @@ Citizen.CreateThread(function()
 				local fw = Fwv(player)
 				SetEntityCoords(player, co.x + fw.x, co.y + fw.y, co.z - 0.47, true, true, true)
 				SetEntityVelocity(PlayerPedId(), velBuffer[2].x, velBuffer[2].y, velBuffer[2].z)
-				Citizen.Wait(500)
+				Wait(500)
 				SetPedToRagdoll(player, 1000, 1000, 0, 0, 0, 0)
 			end
 				
 			velBuffer[2] = velBuffer[1]
 			velBuffer[1] = GetEntityVelocity(car)
-            
-            
 		elseif wasInCar then
             		wasInCar = false
             		beltOn = false
@@ -248,7 +246,6 @@ end)
 --[[Status Event]]--
 RegisterNetEvent('joehud:setInfo')
 AddEventHandler('joehud:setInfo', function(info)
-
         if ESX.PlayerData.job and ESX.PlayerData.job.grade_name and ESX.PlayerData.job.grade_name == 'boss' then
             ESX.TriggerServerCallback('esx_society:getSocietyMoney', function(money)
                 society = money
@@ -265,27 +262,27 @@ AddEventHandler('joehud:setInfo', function(info)
             SendNUIMessage({radio = radioStatus})
         end
 
-        if(lastjob ~= info['job']) then
+        if (lastjob ~= info['job']) then
             lastjob = info['job']
             SendNUIMessage({job = info['job']})
         end
 
-        if(lastcash ~= info['money']) then
+        if (lastcash ~= info['money']) then
             lastcash = info['money']
             SendNUIMessage({money = comma_value(info['money'])})
         end
 
-        if(lastbank ~= info['bankMoney']) then
+        if (lastbank ~= info['bankMoney']) then
             lastbank = info['bankMoney']
             SendNUIMessage({bank = comma_value(info['bankMoney'])})
         end
 
-        if(lastdirty ~= info['blackMoney']) then
+        if (lastdirty ~= info['blackMoney']) then
             lastdirty = info['blackMoney']
             SendNUIMessage({blackMoney = comma_value(info['blackMoney'])})
         end
 
-        if(lastsociety ~= society) then
+        if (lastsociety ~= society) then
             lastsociety = society
             SendNUIMessage({society = comma_value(society)})
         end
