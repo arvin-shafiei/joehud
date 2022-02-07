@@ -229,7 +229,7 @@ Citizen.CreateThread(function()
             		beltOn = false
            		speedBuffer[1], speedBuffer[2] = 0.0, 0.0
         	end
-        Wait(20) 
+        Wait(0) 
 	end
 end)
 
